@@ -1,0 +1,23 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  padding: 2rem;
+  padding-top: 88px;
+  overflow-y: auto;
+  background-color: #fcfcf7;
+}

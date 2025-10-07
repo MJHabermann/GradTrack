@@ -1,0 +1,82 @@
+.file-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fffef8;
+  border: 1px solid #f0eac2;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.file-icon {
+  width: 40px;
+  height: 40px;
+  background-color: #f6e27f;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.file-info {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.file-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2c2c2c;
+}
+
+.file-tags {
+  margin-top: 0.25rem;
+}
+
+.tag {
+  background-color: #e0e0e0;
+  color: #333;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  margin-right: 0.5rem;
+}
+
+.file-meta {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 0.25rem;
+}
+
+.file-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: #f6e27f;
+}
+
+.action-btn.delete {
+  color: #a00000;
+}
+
+.action-btn.delete:hover {
+  background-color: #ffe5e5;
+}

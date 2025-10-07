@@ -1,0 +1,81 @@
+/* Shared modern style for milestone and deadline widgets */
+
+.milestone-card {
+  background-color: #fffef8; /* Soft parchment tone */
+  border: 1px solid #f0eac2; /* Warm border */
+  border-radius: 14px;
+  padding: 2rem;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  max-width: 660px;
+  margin: 0 auto;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.milestone-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.milestone-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #2c2c2c;
+  text-align: left;
+}
+
+.milestone-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.milestone-card li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0eac2;
+}
+
+.milestone-card li:last-child {
+  border-bottom: none;
+}
+
+.milestone-title {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.milestone-status {
+  font-size: 0.85rem;
+  color: #777;
+  font-style: italic;
+}
+
+.milestone-card li{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.milestone-card li:last-child {
+  border-bottom: none;
+}
+
+.milestone-card input[type="checkbox"] {
+  accent-color: #f6e27f;
+  margin-right: 0.75rem;
+  pointer-events: none;
+}
+
+.milestone-card li.completed label {
+  color: #aaa;
+  text-decoration: line-through;
+}
