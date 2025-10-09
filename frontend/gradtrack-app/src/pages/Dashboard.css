@@ -1,18 +1,27 @@
 /* Dashboard.css */
 
+:root {
+  --cream-white: #fdfcf5;
+  --soft-yellow: #fcf8d8;
+  --text-dark: #333;
+  --text-muted: #777;
+  --border-soft: #f0eac2;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background-color: #fdfcf5; /* Soft off-white */
-  color: #333; /* Dark gray for text */
+  background-color: var(--cream-white);
+  color: var(--text-dark);
 }
-
 .dashboard-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding-left: 220px;
+  transition: padding-left 0.3s ease;
   box-sizing: border-box;
+  background-color: var(--cream-white);
 }
 
 .dashboard-container h1 {
@@ -22,16 +31,13 @@ body {
   text-align: center;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
-  padding: 2rem 0;
+.sidebar.collapsed ~ .dashboard-container {
+  padding-left: 60px;
 }
 
 .searchbar-container {
   margin-top: 30px; /* current navbar height */
-  padding: 0.5rem 2rem; /* reduce vertical padding */
+  padding: 0.5rem 2rem;
   background-color: #fcfcf7;
   display: flex;
   justify-content: center;
@@ -46,7 +52,7 @@ body {
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   background-color: #ffffff;
-  color: #333;
+  color: var(--text-dark);
   transition: box-shadow 0.2s ease;
 }
 
@@ -62,34 +68,28 @@ body {
 
 .dashboard-columns {
   display: flex;
+  flex-direction: column;
   gap: 2rem;
   padding: 2rem;
 }
 
 .dashboard-main {
   flex: 1;
+  min-width: 0;
+  z-index: 0;
+  overflow: visible;
 }
 
 .dashboard-side {
-  width: 300px;
+  width: 320px;
   flex-shrink: 0;
   position: sticky;
   top: 88px;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-}
-
-.dashboard-columns {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding: 2rem;
-}
-
-.dashboard-main,
-.dashboard-side {
-  width: 100%;
+  padding-left: 1rem;
 }
 
 /* Desktop layout */
@@ -97,19 +97,5 @@ body {
   .dashboard-columns {
     flex-direction: row;
     align-items: flex-start;
-  }
-
-  .dashboard-main {
-    flex: 1;
-  }
-
-  .dashboard-side {
-    width: 320px;
-    flex-shrink: 0;
-    position: sticky;
-    top: 88px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
   }
 }

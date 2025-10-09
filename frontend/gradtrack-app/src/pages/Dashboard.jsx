@@ -10,43 +10,25 @@ import DocumentVault from '../components/widgets/DocumentVaultWidget';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const [milestones, setMilestones] = useState([]);
   const [deadlines, setDeadlines] = useState([]);
-  // const [evaluations, setEvaluations] = useState([]);
-  // const [reminders, setReminders] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
-    // TODO: Replace with Laravel API call to /api/milestones
-    setMilestones([
-      { id: 1, title: 'Deficiency Courses', status: 'complete', due: '2025-09-01' },
-      { id: 2, title: 'Major Professor Selected', status: 'pending', due: '2025-10-15' },
-      { id: 3, title: 'Committee Formed', status: 'in-progress', due: '2025-11-01' },
-    ]);
-
     // TODO: Replace with Laravel API call to /api/deadlines
     setDeadlines([
       { id: 1, label: 'Submit Program of Study', date: '2025-10-20' },
       { id: 2, label: 'Annual Evaluation Due', date: '2025-11-05' },
     ]);
-
-    // TODO: Replace with Laravel API call to /api/evaluations
-    // setEvaluations([
-    //   { id: 1, faculty: 'Dr. Smith', status: 'approved' },
-    //   { id: 2, faculty: 'Dr. Lee', status: 'pending' },
-    // ]);
-
-    // TODO: Replace with Laravel API call to /api/notifications
-    // setReminders([
-    //   { id: 1, message: 'Upload I-9 form', type: 'document' },
-    //   { id: 2, message: 'Confirm committee members', type: 'milestone' },
-    // ]);
   }, []);
 
   return (
     <>
-      <Sidebar />
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
       <Navbar />
-      <main className="dashboard-container">
+      <main
+        className="dashboard-container"
+        style={{ paddingLeft: sidebarOpen ? '220px' : '0' }}
+      >
         <div className="searchbar-container">
           <input
             type="text"

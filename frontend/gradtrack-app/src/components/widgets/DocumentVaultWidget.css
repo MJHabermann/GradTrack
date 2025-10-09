@@ -6,6 +6,9 @@
   font-family: 'Poppins', sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
+  width: 100%;
+  max-width: none;
+  margin: 0;
 }
 
 .vault-widget:hover {

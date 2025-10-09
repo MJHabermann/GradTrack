@@ -15,11 +15,26 @@ const MilestoneCard = () => {
     ]);
   }, []);
 
+  const total = milestones.length;
+  const completed = milestones.filter(m => m.completed).length;
+  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
   return (
     <div className="milestone-card">
       <h3>Milestones</h3>
+
+      <div className="progress-bar">
+        <div
+          className="progress-fill"
+          style={{ width: `${percentage}%` }}
+        ></div>
+      </div>
+      <p className="progress-text">
+        {completed} of {total} completed ({percentage}%)
+      </p>
+
       <ul>
-        {milestones.map((m) => (
+        {milestones.map(m => (
           <li key={m.id} className={m.completed ? 'completed' : 'pending'}>
             <span className="milestone-title">{m.title}</span>
             <input
