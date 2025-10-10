@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
 import Dashboard from './pages/Dashboard';
 import Signin from "./pages/signin";
 import Signup from "./pages/signup";
 import Milestones from './pages/Milestones';
 import Documents from './pages/Documents';
+import Settings from './pages/Settings';
 
 function App() {
     return (
@@ -20,6 +22,7 @@ function App() {
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/milestones" element={<Milestones />} />
                         <Route path="/documents" element={<Documents />} />
+                          <Route path="/settings" element={<Settings />} />
                         {/* <Route path="/profile" element={<UserProfile />} />
                         <Route path="/admin" element={<AdminPanel />} /> */}
                     </Routes>

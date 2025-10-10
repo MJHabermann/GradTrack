@@ -1,0 +1,21 @@
+.dashboard-footer {
+  margin-top: 4rem;
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #777;
+  background-color: #fcfcf7;
+  border-top: 1px solid #f0eac2;
+  font-family: 'Poppins', sans-serif;
+}
+
+.dashboard-footer a {
+  color: #777;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.dashboard-footer a:hover {
+  color: #a68b00;
+}
