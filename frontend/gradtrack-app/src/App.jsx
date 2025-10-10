@@ -9,6 +9,7 @@ import Settings from './pages/Settings';
 
 function App() {
     return (
+        <UserProvider>
         <BrowserRouter>
             <div className="flex-col">
             <nav style={{ padding: "1rem", display: "flex", gap: "1rem", width: "100vw" }}>
@@ -29,6 +30,7 @@ function App() {
                 </main>
             </div>
         </BrowserRouter>
+        </UserProvider>
     );
 }
 
