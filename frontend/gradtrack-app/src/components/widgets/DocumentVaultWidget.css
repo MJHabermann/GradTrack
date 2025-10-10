@@ -7,8 +7,9 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
   width: 100%;
-  max-width: none;
+  max-width: 660px;
   margin: 0;
+  margin-top: 40px;
 }
 
 .vault-widget:hover {

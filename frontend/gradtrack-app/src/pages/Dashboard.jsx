@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import Sidebar from '../components/layout/Sidebar';
-import Navbar from '../components/layout/Navbar';
+import Layout from '../components/layout/Layout';
 import MilestoneCard from '../components/widgets/MilestoneCard';
+import MajorCompletionWidget from '../components/widgets/MajorCompletionWidget';
 import DeadlineList from '../components/widgets/DeadlineList';
 import DocumentVault from '../components/widgets/DocumentVaultWidget';
 // import EvaluationStatus from '../components/widgets/EvaluationStatus';
 // import ReminderPanel from '../components/widgets/ReminderPanel';
 // import QuickActions from '../components/widgets/QuickActions';
 import './Dashboard.css';
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
 
 const Dashboard = () => {
   const [deadlines, setDeadlines] = useState([]);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     // TODO: Replace with Laravel API call to /api/deadlines
@@ -19,16 +21,13 @@ const Dashboard = () => {
       { id: 1, label: 'Submit Program of Study', date: '2025-10-20' },
       { id: 2, label: 'Annual Evaluation Due', date: '2025-11-05' },
     ]);
+
+
   }, []);
 
   return (
-    <>
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-      <Navbar />
-      <main
-        className="dashboard-container"
-        style={{ paddingLeft: sidebarOpen ? '220px' : '0' }}
-      >
+    <Layout>
+      <main className="dashboard-container">
         <div className="searchbar-container">
           <input
             type="text"
@@ -39,11 +38,14 @@ const Dashboard = () => {
 
         <div className="dashboard-columns">
           <div className="dashboard-main">
+            <h2 className="dashboard-section-title">Services</h2>
             <DocumentVault />
             {/* Add other main widgets here */}
           </div>
 
           <div className="dashboard-side">
+            <h2 className="dashboard-section-title">Progress Tracker</h2>
+            <MajorCompletionWidget studentId={user.id} />
             <MilestoneCard />
             <DeadlineList deadlines={deadlines} />
           </div>
@@ -64,7 +66,7 @@ const Dashboard = () => {
           <QuickActions />
         </section> */}
       </main>
-    </>
+    </Layout>
   );
 };
 

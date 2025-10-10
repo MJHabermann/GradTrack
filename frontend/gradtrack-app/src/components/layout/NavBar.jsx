@@ -1,16 +1,18 @@
 import React from 'react';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ sidebarOpen }) => {
   return (
-    <header className="navbar">
-      <div className="navbar-title">Welcome, User</div>
+    <header className={`navbar ${sidebarOpen ? 'with-sidebar' : 'full-width'}`}>
+      <div className="navbar-title">Welcome, Mikayla</div>
       <div className="navbar-actions">
-        <button className="nav-btn">Settings</button>
-        <button className="nav-btn">Logout</button>
+        <a href="/settings" className="nav-btn">Settings</a>
+        <button className="nav-btn logout">Logout</button>
       </div>
     </header>
   );
 };
 
+
 export default Navbar;
+
