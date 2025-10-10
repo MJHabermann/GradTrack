@@ -1,5 +1,7 @@
 import React from 'react';
 import './DocumentVaultWidget.css';
+import {Link} from 'react-router-dom';
+
 
 const DocumentVaultWidget = () => {
   const recentFiles = [];
@@ -16,7 +18,7 @@ const DocumentVaultWidget = () => {
           </li>
         ))}
       </ul>
-      <a href="/dashboard/documents" className="vault-link">See All Uploads →</a>
+      <Link to="/documents" className="vault-link">See All Uploads →</Link>
     </div>
   );
 };
