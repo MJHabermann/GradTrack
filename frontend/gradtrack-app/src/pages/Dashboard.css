@@ -14,14 +14,15 @@ body {
   background-color: var(--cream-white);
   color: var(--text-dark);
 }
+
 .dashboard-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding-left: 220px;
-  transition: padding-left 0.3s ease;
+  padding: 2rem;
   box-sizing: border-box;
   background-color: var(--cream-white);
+  transition: margin-left 0.3s ease;
 }
 
 .dashboard-container h1 {
@@ -31,16 +32,15 @@ body {
   text-align: center;
 }
 
-.sidebar.collapsed ~ .dashboard-container {
-  padding-left: 60px;
-}
-
 .searchbar-container {
-  margin-top: 30px; /* current navbar height */
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
   padding: 0.5rem 2rem;
   background-color: #fcfcf7;
   display: flex;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .searchbar {
@@ -66,11 +66,17 @@ body {
   box-shadow: 0 0 0 2px #f6e27f;
 }
 
+.searchbar-wrapper {
+  width: 100%;
+  max-width: 480px;
+}
+
 .dashboard-columns {
   display: flex;
   flex-direction: column;
   gap: 2rem;
   padding: 2rem;
+  align-items: flex-start; 
 }
 
 .dashboard-main {
@@ -99,3 +105,18 @@ body {
     align-items: flex-start;
   }
 }
+
+.dashboard-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1rem 0;
+  padding: 0 1.5rem; /* Matches widget horizontal padding */
+  color: #333;
+  font-family: 'Poppins', sans-serif;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+
+
+

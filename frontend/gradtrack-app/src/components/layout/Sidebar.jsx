@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
@@ -11,7 +12,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         {isOpen && (
           <ul className="nav-links">
-            <li><a href="#">Dashboard</a></li>
+            <li><Link to="/">Dashboard</Link></li>
             <li><a href="#">Milestones</a></li>
             <li><a href="#">Deadlines</a></li>
             <li><a href="#">Evaluations</a></li>
