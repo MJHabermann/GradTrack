@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard';
 import Signin from "./pages/signin";
 import Signup from "./pages/signup";
 import Milestones from './pages/Milestones';
+import Documents from './pages/Documents';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                         <Route path="/signin" element={<Signin />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/milestones" element={<Milestones />} />
+                        <Route path="/documents" element={<Documents />} />
                         {/* <Route path="/profile" element={<UserProfile />} />
                         <Route path="/admin" element={<AdminPanel />} /> */}
                     </Routes>
