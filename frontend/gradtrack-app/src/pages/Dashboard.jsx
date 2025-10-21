@@ -45,7 +45,7 @@ const Dashboard = () => {
             <h2 className="dashboard-section-title">Services</h2>
             <CalendarWidget />
             <DocumentVault />
-            <AdvisorContactWidget studentId={1} />
+            <AdvisorContactWidget facultyId={user?.id || 1} />
             {/* Add other main widgets here */}
           </div>
 
