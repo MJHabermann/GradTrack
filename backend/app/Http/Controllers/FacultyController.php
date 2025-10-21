@@ -178,29 +178,43 @@ class FacultyController extends Controller
     /**
      * Get faculty with their advised students
      */
-    public function getWithStudents(string $id)
-    {
-        $faculty = Faculty::with(['user', 'advisedStudents.user'])
-            ->findOrFail($id);
+public function getWithStudents(string $id)
+{
+    $faculty = Faculty::with(['user', 'advisedStudents.user'])->findOrFail($id);
 
-        return response()->json([
-            'faculty' => [
-                'faculty_id' => $faculty->faculty_id,
-                'title' => $faculty->title,
-                'office' => $faculty->office,
-                'user' => $faculty->user,
-                'advised_students' => $faculty->advisedStudents->map(function ($student) {
-                    return [
-                        'student_id' => $student->student_id,
-                        'program_type' => $student->program_type,
-                        'start_term' => $student->start_term,
-                        'i9_status' => $student->i9_status,
-                        'deficiency_cleared' => $student->deficiency_cleared,
-                        'graduation_term' => $student->graduation_term,
-                        'user' => $student->user,
-                    ];
-                }),
-            ]
-        ]);
-    }
+    return response()->json([
+        'faculty' => [
+            'faculty_id' => $faculty->faculty_id,
+            'title' => $faculty->title,
+            'office' => $faculty->office,
+            'user' => [
+                'id' => $faculty->user->id,
+                'first_name' => $faculty->user->first_name,
+                'last_name' => $faculty->user->last_name,
+                'email' => $faculty->user->email,
+                'department' => $faculty->user->department,
+                'role' => $faculty->user->role,
+            ],
+            'advised_students' => $faculty->advisedStudents->map(function ($student) {
+                return [
+                    'student_id' => $student->student_id,
+                    'program_type' => $student->program_type,
+                    'start_term' => $student->start_term,
+                    'graduation_term' => $student->graduation_term,
+                    'i9_status' => $student->i9_status,
+                    'deficiency_cleared' => $student->deficiency_cleared,
+                    'user' => [
+                        'id' => $student->user->id,
+                        'first_name' => $student->user->first_name,
+                        'last_name' => $student->user->last_name,
+                        'email' => $student->user->email,
+                        'department' => $student->user->department,
+                        'role' => $student->user->role,
+                    ],
+                ];
+            }),
+        ]
+    ]);
+}
+
 }

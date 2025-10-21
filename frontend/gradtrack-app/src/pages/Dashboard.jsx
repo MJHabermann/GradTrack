@@ -5,6 +5,7 @@ import MajorCompletionWidget from '../components/widgets/MajorCompletionWidget';
 import DeadlineList from '../components/widgets/DeadlineList';
 import DocumentVault from '../components/widgets/DocumentVaultWidget';
 import AdvisorContactWidget from '../components/widgets/AdvisorContactWidget';
+import CalendarWidget from '../components/widgets/CalendarWidget';
 // import EvaluationStatus from '../components/widgets/EvaluationStatus';
 // import ReminderPanel from '../components/widgets/ReminderPanel';
 // import QuickActions from '../components/widgets/QuickActions';
@@ -42,8 +43,9 @@ const Dashboard = () => {
         <div className="dashboard-columns">
           <div className="dashboard-main">
             <h2 className="dashboard-section-title">Services</h2>
+            <CalendarWidget />
             <DocumentVault />
-            <AdvisorContactWidget studentId={1} />
+            <AdvisorContactWidget facultyId={user?.id || 1} />
             {/* Add other main widgets here */}
           </div>
 

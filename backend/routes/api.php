@@ -5,7 +5,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\FacultyController;
-use App\Http\Controllers\AdvisorController;
 use App\Http\Controllers\RegistrarController;
 use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\DeadlineController;
@@ -37,8 +36,7 @@ Route::get('/faculty/{id}/students', [FacultyController::class, 'getWithStudents
 
 // Existing routes
 Route::get('/major-completion/{studentId}', [RegistrarController::class, 'getCompletion']);
-Route::get('/advisor/{studentId}', [AdvisorController::class, 'show']);
-Route::post('/advisor/message', [AdvisorController::class, 'sendMessage']);
+
 // Application routes
 Route::get('/milestones', [MilestoneController::class, 'index']);
 Route::get('/deadlines', [DeadlineController::class, 'index']);
