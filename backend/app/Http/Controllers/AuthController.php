@@ -17,17 +17,21 @@ class AuthController extends Controller
     {
         // Validate the request
         $request->validate([
-            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'department' => 'nullable|string|max:255',
         ]);
 
         // Create the user (role will default to 'student')
         $user = User::create([
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'student', // Always 'student' for new registrations
+            'department' => $request->department,
         ]);
 
         // Log the user in after registration
@@ -37,9 +41,12 @@ class AuthController extends Controller
             'message' => 'User registered successfully',
             'user' => [
                 'id' => $user->id,
-                'name' => $user->name,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'full_name' => $user->full_name,
                 'email' => $user->email,
                 'role' => $user->role,
+                'department' => $user->department,
             ]
         ], 201);
     }
@@ -63,9 +70,12 @@ class AuthController extends Controller
                 'message' => 'Login successful',
                 'user' => [
                     'id' => $user->id,
-                    'name' => $user->name,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'full_name' => $user->full_name,
                     'email' => $user->email,
                     'role' => $user->role,
+                    'department' => $user->department,
                 ]
             ]);
         }
@@ -92,18 +102,55 @@ class AuthController extends Controller
     }
 
     /**
+     * Get all users
+     */
+    public function getAllUsers()
+    {
+        $users = User::with(['student', 'faculty'])->get();
+        
+        return response()->json([
+            'users' => $users->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'full_name' => $user->full_name,
+                    'email' => $user->email,
+                    'role' => $user->role,
+                    'department' => $user->department,
+                    'student' => $user->student,
+                    'faculty' => $user->faculty,
+                    'created_at' => $user->created_at,
+                ];
+            })
+        ]);
+    }
+
+    /**
      * Get current user info
      */
     public function me(Request $request)
     {
         $user = Auth::user();
         
+        if (!$user) {
+            return response()->json([
+                'message' => 'No authenticated user',
+                'user' => null
+            ]);
+        }
+        
         return response()->json([
             'user' => [
                 'id' => $user->id,
-                'name' => $user->name,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'full_name' => $user->full_name,
                 'email' => $user->email,
                 'role' => $user->role,
+                'department' => $user->department,
+                'student' => $user->student,
+                'faculty' => $user->faculty,
             ]
         ]);
     }
