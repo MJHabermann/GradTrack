@@ -11,11 +11,14 @@ use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\DeadlineController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\DocumentController;
+
 // Authentication routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('/me', [AuthController::class, 'me']);
+
 
 // User management routes
 Route::apiResource('users', UserController::class);
@@ -42,3 +45,11 @@ Route::get('/deadlines', [DeadlineController::class, 'index']);
 Route::get('/evaluations', [EvaluationController::class, 'index']);
 Route::get('/notifications', [NotificationController::class, 'index']);
 
+// Document management routes
+Route::middleware('auth:sanctum')->group(function () { // Only authenticated users can access these routes
+    Route::get('/documents', [DocumentController::class, 'index']); // Get all documents for the authenticated user
+    Route::post('/documents/upload', [DocumentController::class, 'upload']); // Upload a new document
+    Route::get('/documents/{id}', [DocumentController::class, 'show']); // Get a single document's metadata
+    Route::get('/documents/{id}/download', [DocumentController::class, 'download']); // Download a document
+    Route::delete('/documents/{id}', [DocumentController::class, 'destroy']); // Delete a document
+});
