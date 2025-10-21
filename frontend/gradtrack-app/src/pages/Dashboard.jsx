@@ -13,7 +13,7 @@ import { UserContext } from '../context/UserContext';
 
 const Dashboard = () => {
   const [deadlines, setDeadlines] = useState([]);
-  const { user } = useContext(UserContext);
+  const { user, loading } = useContext(UserContext);
 
   useEffect(() => {
     // TODO: Replace with Laravel API call to /api/deadlines
@@ -24,6 +24,32 @@ const Dashboard = () => {
 
 
   }, []);
+
+  // Show loading state while user data is being fetched
+  if (loading) {
+    return (
+      <Layout>
+        <main className="dashboard-container">
+          <div className="loading-container">
+            <h2>Loading...</h2>
+          </div>
+        </main>
+      </Layout>
+    );
+  }
+
+  // Show error state if user is not authenticated
+  if (!user) {
+    return (
+      <Layout>
+        <main className="dashboard-container">
+          <div className="error-container">
+            <h2>Please log in to access the dashboard</h2>
+          </div>
+        </main>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

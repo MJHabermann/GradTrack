@@ -19,11 +19,12 @@ function App() {
                 <main className="flex-grow container mx-auto px-4 py-6">
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/signin" element={<Signin />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/milestones" element={<Milestones />} />
                         <Route path="/documents" element={<Documents />} />
-                          <Route path="/settings" element={<Settings />} />
+                        <Route path="/settings" element={<Settings />} />
                         {/* <Route path="/profile" element={<UserProfile />} />
                         <Route path="/admin" element={<AdminPanel />} /> */}
                     </Routes>
