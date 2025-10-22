@@ -20,5 +20,12 @@ Route::get('/courses', [CourseController::class, 'index']);
 // Route::get('/notifications', [NotificationController::class, 'index']);
 Route::post('/advisor/message', [AdvisorController::class, 'sendMessage']);
 Route::post('/courses', [CourseController::class, 'store']);
+Route::post('/courses/{course}/prerequisites', [CourseController::class, 'addPrerequisite']);
+Route::post('/courses/{course}/prerequisite-groups', [CourseController::class, 'addPrerequisiteGroup']);
+
+Route::put('/courses/{course}', [CourseController::class, 'update']);
+Route::delete('/courses/{course}', [CourseController::class, 'destroy']);
+Route::delete('/courses/{course}/prerequisite-groups/{group_id}', [CourseController::class, 'removePrerequisiteGroup']);
+
 Route::apiResource('/courses', CourseController::class);
 Route::apiResource('/enrollments', EnrollmentController::class);
