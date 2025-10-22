@@ -10,9 +10,16 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Course::all());
+        $query = Course::query();
+
+        if ($request->has('level')) {
+            $query->where('level', $request->input('level'));
+        }
+
+        $courses = $query->orderBy('course_code')->get();
+        return response()->json($courses);
     }
 
     public function store(Request $request)

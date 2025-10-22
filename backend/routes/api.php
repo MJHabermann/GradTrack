@@ -12,11 +12,13 @@ use App\Http\Controllers\RegistrarController;
 
 Route::get('/major-completion/{studentId}', [RegistrarController::class, 'getCompletion']);
 Route::get('/advisor/{studentId}', [AdvisorController::class, 'show']);
+Route::get('/courses', [CourseController::class, 'index']);
+
 // Route::get('/milestones', [MilestoneController::class, 'index']);
 // Route::get('/deadlines', [DeadlineController::class, 'index']);
 // Route::get('/evaluations', [EvaluationController::class, 'index']);
 // Route::get('/notifications', [NotificationController::class, 'index']);
 Route::post('/advisor/message', [AdvisorController::class, 'sendMessage']);
-
+Route::post('/courses', [CourseController::class, 'store']);
 Route::apiResource('/courses', CourseController::class);
 Route::apiResource('/enrollments', EnrollmentController::class);
