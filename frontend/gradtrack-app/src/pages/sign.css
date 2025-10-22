@@ -18,9 +18,13 @@
     gap: 1rem;
 }
 
-.login-page form input{
+.login-page form input,
+.login-page form select{
     padding: 12px;
     border-radius: 10px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
 }
 
 .login-page form button{

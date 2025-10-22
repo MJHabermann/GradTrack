@@ -9,10 +9,13 @@ export default function Signup() {
     const navigate = useNavigate();
     const { login } = useContext(UserContext);
     const [form, setForm] = useState({
-        name: "",
+        firstName: "",
+        lastName: "",
         email: "",
         password: "",
-        confirm: "",
+        password_confirmation: "",
+        department: "",
+        role: "student",
         agree: false,
     });
     const [error, setError] = useState("");
@@ -31,7 +34,7 @@ export default function Signup() {
         setLoading(true);
 
         // Basic validation
-        if (form.password !== form.confirm) {
+        if (form.password !== form.password_confirmation) {
             setError("Passwords do not match");
             setLoading(false);
             return;
@@ -44,17 +47,27 @@ export default function Signup() {
         }
 
         try {
-            const response = await API_CONFIG.request(API_CONFIG.ENDPOINTS.REGISTER, {
+            const requestData = { 
+                first_name: form.firstName, 
+                last_name: form.lastName,
+                email: form.email, 
+                password: form.password, 
+                password_confirmation: form.password_confirmation,
+                department: form.department || null,
+                role: form.role
+            };
+            
+            console.log('POST submission data:', requestData);
+            console.log('API endpoint:', API_CONFIG.ENDPOINTS.REGISTER);
+            console.log('Full URL:', API_CONFIG.buildUrl(API_CONFIG.ENDPOINTS.REGISTER));
+            
+            const { response, data } = await API_CONFIG.request(API_CONFIG.ENDPOINTS.REGISTER, {
                 method: 'POST',
-                body: JSON.stringify({ 
-                    name: form.name, 
-                    email: form.email, 
-                    password: form.password, 
-                    password_confirmation: form.confirm 
-                }),
+                body: JSON.stringify(requestData),
             });
 
-            const data = await response.json();
+            console.log('Response status:', response.status);
+            console.log('Response data:', data);
             
             // Use UserContext to handle login
             login(data.user);
@@ -62,6 +75,7 @@ export default function Signup() {
             // Navigate to dashboard
             navigate('/dashboard');
         } catch (error) {
+            console.error('Registration error:', error);
             setError(error.message || 'Registration failed. Please try again.');
         } finally {
             setLoading(false);
@@ -73,10 +87,16 @@ export default function Signup() {
             <h1>Sign Up</h1>
             <form onSubmit={sendRegister}>
                 {error && <div style={{color: 'red', marginBottom: '1rem'}}>{error}</div>}
-                <input type="text" name = "name" className="name" placeholder="Name" value = {form.name} onChange={(handleChange)} required/>
-                <input type="email" name = "email" className="email" placeholder="E-mail" value={form.email} onChange={(handleChange)} required/>
+                <input type="text" name="firstName" className="name" placeholder="First Name" value={form.firstName} onChange={(handleChange)} required/>
+                <input type="text" name="lastName" className="name" placeholder="Last Name" value={form.lastName} onChange={(handleChange)} required/>
+                <input type="email" name="email" className="email" placeholder="E-mail" value={form.email} onChange={(handleChange)} required/>
+                <select name="role" className="role" value={form.role} onChange={handleChange} required>
+                    <option value="student">Student</option>
+                    <option value="faculty">Faculty</option>
+                </select>
+                <input type="text" name="department" className="department" placeholder="Department (Optional)" value={form.department} onChange={(handleChange)}/>
                 <input type="password" name="password" className="password" placeholder="Password" value={form.password} onChange={(handleChange)} required/>
-                <input type="password" name="confirm" className="confirm" placeholder="Confirm" value={form.confirm} onChange={(handleChange)} required/>
+                <input type="password" name="password_confirmation" className="confirm" placeholder="Confirm Password" value={form.password_confirmation} onChange={(handleChange)} required/>
                 <label>
                     <input type="checkbox" name = "agree" className="agree" checked={form.agree} onChange={(handleChange)} required/>
                     I agree to the terms and conditions.

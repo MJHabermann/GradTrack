@@ -11,6 +11,8 @@ class Student extends Model
 
     protected $fillable = [
         'student_id',
+        'first_name',
+        'last_name',
         'program_type',
         'major_professor_id',
         'start_term',
@@ -61,5 +63,13 @@ class Student extends Model
     public function hasCompletedI9(): bool
     {
         return $this->i9_status === 'Completed';
+    }
+
+    /**
+     * Get the student's full name
+     */
+    public function getFullNameAttribute(): string
+    {
+        return trim($this->first_name . ' ' . $this->last_name);
     }
 }

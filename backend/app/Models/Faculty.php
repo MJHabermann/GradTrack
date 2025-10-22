@@ -13,6 +13,8 @@ class Faculty extends Model
 
     protected $fillable = [
         'faculty_id',
+        'first_name',
+        'last_name',
         'title',
         'office',
     ];
@@ -38,7 +40,7 @@ class Faculty extends Model
      */
     public function getFullNameAttribute(): string
     {
-        return $this->user ? $this->user->full_name : '';
+        return trim($this->first_name . ' ' . $this->last_name);
     }
 
     /**

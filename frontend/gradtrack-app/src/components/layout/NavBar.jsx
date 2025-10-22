@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
+import { UserContext } from '../../context/UserContext';
 
 const Navbar = ({ sidebarOpen }) => {
+  const { user, logout } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/signin');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      navigate('/signin');
+    }
+  };
+
+  const displayName = user ? `${user.first_name} ${user.last_name}` : 'User';
+
   return (
     <header className={`navbar ${sidebarOpen ? 'with-sidebar' : 'full-width'}`}>
-      <div className="navbar-title">Welcome, Mikayla</div>
+      <div className="navbar-title">Welcome, {displayName}</div>
       <div className="navbar-actions">
         <a href="/settings" className="nav-btn">Settings</a>
-        <button className="nav-btn logout">Logout</button>
+        <button className="nav-btn logout" onClick={handleLogout}>Logout</button>
       </div>
     </header>
   );

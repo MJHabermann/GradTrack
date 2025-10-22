@@ -20,19 +20,63 @@ class AuthController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|confirmed',
+            'role' => 'required|string|in:student,faculty',
             'department' => 'nullable|string|max:255',
+            // Student-specific fields
+            'program_type' => 'nullable|string|in:Masters,PhD',
+            'start_term' => 'nullable|string|max:255',
+            'major_professor_id' => 'nullable|exists:users,id',
+            // Faculty-specific fields
+            'title' => 'nullable|string|max:255',
+            'office' => 'nullable|string|max:255',
         ]);
 
-        // Create the user (role will default to 'student')
+        // Create the user with the role provided by the user
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'student', // Always 'student' for new registrations
+            'role' => $request->role, 
             'department' => $request->department,
         ]);
+
+        // Create student or faculty record based on role
+        if ($user->role === 'student') {
+            $studentData = [
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+            ];
+            
+            // Only add optional fields if they are provided
+            if ($request->has('program_type')) {
+                $studentData['program_type'] = $request->program_type;
+            }
+            if ($request->has('start_term')) {
+                $studentData['start_term'] = $request->start_term;
+            }
+            if ($request->has('major_professor_id')) {
+                $studentData['major_professor_id'] = $request->major_professor_id;
+            }
+            
+            $user->student()->create($studentData);
+        } elseif ($user->role === 'faculty') {
+            $facultyData = [
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+            ];
+            
+            // Only add optional fields if they are provided
+            if ($request->has('title')) {
+                $facultyData['title'] = $request->title;
+            }
+            if ($request->has('office')) {
+                $facultyData['office'] = $request->office;
+            }
+            
+            $user->faculty()->create($facultyData);
+        }
 
         // Log the user in after registration
         Auth::login($user);
@@ -47,6 +91,8 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role' => $user->role,
                 'department' => $user->department,
+                'student' => $user->student,
+                'faculty' => $user->faculty,
             ]
         ], 201);
     }
