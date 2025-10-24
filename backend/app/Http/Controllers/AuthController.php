@@ -65,9 +65,13 @@ class AuthController extends Controller
         // Attempt to authenticate
         if (Auth::attempt($request->only('email', 'password'))) {
             $user = Auth::user();
-            
+
+            // Create a new personal access token for the user
+            $token = $user->createToken('web')->plainTextToken;
+
             return response()->json([
                 'message' => 'Login successful',
+                'token' => $token,
                 'user' => [
                     'id' => $user->id,
                     'first_name' => $user->first_name,
@@ -91,6 +95,10 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        if($request->user() && $request->user()->currentAccessToken()) {
+            $request->user()->currentAccessToken()->delete();
+        }
+
         Auth::logout();
         
         $request->session()->invalidate();
