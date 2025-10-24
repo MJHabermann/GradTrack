@@ -6,6 +6,7 @@ import Signup from "./pages/signup";
 import Milestones from './pages/Milestones';
 import Documents from './pages/Documents';
 import Settings from './pages/Settings';
+import FacultyDashboard from './pages/FacultyDashboard';
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/faculty-dashboard" element={<FacultyDashboard />} /> // TODO: MAKE protected route
                         <Route path="/signin" element={<Signin />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/milestones" element={<Milestones />} />

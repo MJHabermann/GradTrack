@@ -34,7 +34,7 @@ export default function Signin() {
             });
             
             // Use UserContext to handle login
-            login(data.user);
+            login(data.user, data.token);
             
             // Navigate to dashboard
             navigate('/dashboard');

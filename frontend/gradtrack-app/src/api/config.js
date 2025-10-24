@@ -10,6 +10,9 @@ const API_CONFIG = {
     LOGOUT: '/api/logout',
     USER_PROFILE: '/api/user/profile',
     DOCUMENTS: '/api/documents',
+    DOCUMENTS_UPLOAD: '/api/documents/upload',
+    DOCUMENT_DOWNLOAD: (id) => `/api/documents/${id}/download`,
+    DOCUMENT_DELETE: (id) => `/api/documents/${id}`,
     MILESTONES: '/api/milestones',
   },
   
@@ -17,6 +20,11 @@ const API_CONFIG = {
   DEFAULT_HEADERS: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
+  },
+  
+  // Get auth token from localStorage
+  getAuthToken: () => {
+    return localStorage.getItem('auth_token');
   },
   
   // Helper function to build full URL
@@ -27,14 +35,26 @@ const API_CONFIG = {
   // Helper function to make API calls
   request: async (endpoint, options = {}) => {
     const url = API_CONFIG.buildUrl(endpoint);
+    const token = API_CONFIG.getAuthToken();
     
     const config = {
       headers: {
         ...API_CONFIG.DEFAULT_HEADERS,
         ...options.headers,
       },
+      credentials: 'include', // Important for cookies/sessions
       ...options,
     };
+    
+    // Add authorization token if available
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    
+    // Don't set Content-Type for FormData (browser will set it with boundary)
+    if (options.body instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
     
     try {
       const response = await fetch(url, config);

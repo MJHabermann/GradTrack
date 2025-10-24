@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('first_name')->default('Unknown')->after('id');
             $table->string('last_name')->default('User')->after('first_name');
             $table->string('department')->nullable()->after('role');
+
+            $table->dropColumn('name');
             
             // Update the role enum to include 'faculty'
             $table->dropColumn('role');
