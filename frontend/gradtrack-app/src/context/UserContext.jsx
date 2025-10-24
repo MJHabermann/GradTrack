@@ -29,10 +29,13 @@ export const UserProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  const login = (userData) => {
+  const login = (userData, token) => {
     setUser(userData);
     setIsAuthenticated(true);
     localStorage.setItem('user', JSON.stringify(userData));
+    if(token) {
+      localStorage.setItem('auth_token', token);
+    }
   };
 
   const logout = async () => {
@@ -48,6 +51,7 @@ export const UserProvider = ({ children }) => {
       setUser(null);
       setIsAuthenticated(false);
       localStorage.removeItem('user');
+      localStorage.removeItem('auth_token');
     }
   };
 

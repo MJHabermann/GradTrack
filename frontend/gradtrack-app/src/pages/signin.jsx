@@ -36,7 +36,7 @@ export default function Signin() {
             const data = await response.json();
             
             // Use UserContext to handle login
-            login(data.user);
+            login(data.user, data.token);
             
             // Navigate to dashboard
             navigate('/dashboard');
