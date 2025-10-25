@@ -17,14 +17,24 @@ const Navbar = ({ sidebarOpen }) => {
     }
   };
 
-  const displayName = user ? `${user.first_name} ${user.last_name}` : 'User';
+  const handleLogin = () => {
+    navigate('/signin');
+  };
+
+  const displayName = user ? `${user.first_name} ${user.last_name}` : 'Guest';
 
   return (
     <header className={`navbar ${sidebarOpen ? 'with-sidebar' : 'full-width'}`}>
       <div className="navbar-title">Welcome, {displayName}</div>
       <div className="navbar-actions">
-        <a href="/settings" className="nav-btn">Settings</a>
-        <button className="nav-btn logout" onClick={handleLogout}>Logout</button>
+        {user ? (
+          <>
+            <a href="/settings" className="nav-btn">Settings</a>
+            <button className="nav-btn logout" onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <button className="nav-btn login" onClick={handleLogin}>Login</button>
+        )}
       </div>
     </header>
   );

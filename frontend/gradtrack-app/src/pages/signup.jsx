@@ -61,16 +61,18 @@ export default function Signup() {
             console.log('API endpoint:', API_CONFIG.ENDPOINTS.REGISTER);
             console.log('Full URL:', API_CONFIG.buildUrl(API_CONFIG.ENDPOINTS.REGISTER));
             
-            const { response, data } = await API_CONFIG.request(API_CONFIG.ENDPOINTS.REGISTER, {
+            const response = await API_CONFIG.request(API_CONFIG.ENDPOINTS.REGISTER, {
                 method: 'POST',
                 body: JSON.stringify(requestData),
             });
 
+            const data = await response.json();
+            
             console.log('Response status:', response.status);
             console.log('Response data:', data);
             
             // Use UserContext to handle login
-            login(data.user);
+            login(data.user, data.token);
             
             // Navigate to dashboard
             navigate('/dashboard');

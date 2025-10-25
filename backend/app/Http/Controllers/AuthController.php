@@ -81,8 +81,12 @@ class AuthController extends Controller
         // Log the user in after registration
         Auth::login($user);
 
+        // Create a new personal access token for the user
+        $token = $user->createToken('web')->plainTextToken;
+
         return response()->json([
             'message' => 'User registered successfully',
+            'token' => $token,
             'user' => [
                 'id' => $user->id,
                 'first_name' => $user->first_name,
@@ -141,14 +145,21 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        // Try to delete the current access token if user is authenticated
         if($request->user() && $request->user()->currentAccessToken()) {
             $request->user()->currentAccessToken()->delete();
         }
 
-        Auth::logout();
+        // Logout from session if authenticated
+        if(Auth::check()) {
+            Auth::logout();
+        }
         
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // Invalidate session if it exists
+        if($request->hasSession()) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return response()->json([
             'message' => 'Logout successful'

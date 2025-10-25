@@ -16,14 +16,18 @@ const DocumentVaultWidget = () => {
 
   const loadDocumentCount = async () => {
     try {
-    const documents = await documentVaultApi.getAllDocuments();
-    const requiredDocumentsCount = documents.filter(document => document.is_required).length;
+      const documents = await documentVaultApi.getAllDocuments();
+      const requiredDocumentsCount = documents.filter(document => document.is_required).length;
 
-    const missingDocumentsCount = TOTAL_FORMS_NEEDED - requiredDocumentsCount;
-    setFormsNeeded(missingDocumentsCount);
-    setLoading(false);
+      const missingDocumentsCount = TOTAL_FORMS_NEEDED - requiredDocumentsCount;
+      setFormsNeeded(missingDocumentsCount);
+      setLoading(false);
     } catch (error) {
       console.error('Error loading document count:', error);
+      // If it's an auth error, assume all forms are needed
+      if (error.message.includes('Unauthenticated') || error.message.includes('401')) {
+        setFormsNeeded(TOTAL_FORMS_NEEDED);
+      }
       setLoading(false);
     }
   };

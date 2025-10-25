@@ -28,10 +28,12 @@ export default function Signin() {
         setError("");
         
         try {
-            const { response, data } = await API_CONFIG.request(API_CONFIG.ENDPOINTS.LOGIN, {
+            const response = await API_CONFIG.request(API_CONFIG.ENDPOINTS.LOGIN, {
                 method: 'POST',
                 body: JSON.stringify({ email, password }),
             });
+            
+            const data = await response.json();
             
             // Use UserContext to handle login
             login(data.user, data.token);

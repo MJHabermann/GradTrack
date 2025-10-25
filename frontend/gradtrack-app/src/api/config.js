@@ -61,35 +61,11 @@ const API_CONFIG = {
       
       // Handle non-2xx responses
       if (!response.ok) {
-        let errorData;
-        try {
-          errorData = await response.json();
-        } catch (parseError) {
-          // If response is not JSON (e.g., HTML error page), create a generic error
-          errorData = { message: `HTTP ${response.status}: ${response.statusText}` };
-        }
-        
-        // Handle 422 validation errors specifically
-        if (response.status === 422 && errorData.errors) {
-          // Format Laravel validation errors into a readable message
-          const validationErrors = Object.entries(errorData.errors)
-            .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
-            .join('; ');
-          throw new Error(validationErrors || errorData.message || 'Validation failed');
-        }
-        
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
       }
       
-      // Parse JSON response for successful requests
-      let data;
-      try {
-        data = await response.json();
-      } catch (parseError) {
-        console.warn(`Could not parse JSON response for ${endpoint}:`, parseError);
-        data = {};
-      }
-      return { response, data };
+      return response;
     } catch (error) {
       console.error(`API request failed for ${endpoint}:`, error);
       throw error;
