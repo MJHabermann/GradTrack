@@ -75,7 +75,13 @@ export default function Signup() {
             login(data.user, data.token);
             
             // Navigate to dashboard
-            navigate('/dashboard');
+            if(data.user.role === 'student') {
+                navigate('/dashboard');
+            } else if(data.user.role === 'faculty') {
+                navigate('/faculty-dashboard');
+            } else if(data.user.role === 'admin') {
+                navigate('/faculty-dashboard');
+            }
         } catch (error) {
             console.error('Registration error:', error);
             setError(error.message || 'Registration failed. Please try again.');
