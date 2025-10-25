@@ -39,7 +39,13 @@ export default function Signin() {
             login(data.user, data.token);
             
             // Navigate to dashboard
-            navigate('/dashboard');
+            if(data.user.role === 'student') {
+                navigate('/dashboard');
+            } else if(data.user.role === 'faculty') {
+                navigate('/faculty-dashboard');
+            } else if(data.user.role === 'admin') {
+                navigate('/faculty-dashboard');
+            }
         } catch (error) {
             setError(error.message || 'Login failed. Please try again.');
         } finally {
