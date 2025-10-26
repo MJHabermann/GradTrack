@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
+import Sidebar from '../components/layout/Sidebar';
+import Navbar from '../components/layout/Navbar';
 import axios from "axios";
-
+import './Courses.css'
 const api = axios.create({
-    baseURL: "http://localhost:8000/api",
+    baseURL: "http://127.0.0.1:8000/api",
 });
 
 export default function Courses() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [filterLevel, setFilterLevel] = useState("");
     // state for adding a new course
     const [newCourse, setNewCourse] = useState({
         course_code: "",
@@ -21,7 +25,7 @@ export default function Courses() {
     // state for managing prerequisite groups
     const [groupForm, setGroupForm] = useState({
         course_id: "",
-        prerequisites: [],
+        prerequisiteIds: [],
     });
     useEffect(() => {
         fetchCourses();
@@ -35,13 +39,13 @@ export default function Courses() {
             const response = await api.get("/courses", { params });
             const normalized = response.data.map((c) => {
                 //may not work
-                const groups = c.prerequisiteGroups || [];
+                const groups = c.prerequisiteGroups ?? c.prerequisite_groups ?? [];
                 return { ...c, prerequisiteGroups: groups };
             });
             setCourses(normalized);
         } catch (error) {
             console.error("Error fetching courses:", error);
-            alert("Failed to fetch courses. Please try again later.");
+            alert("Failed to fetch courses. Please try again later.", error);
         }
         finally {
             setLoading(false);
@@ -105,7 +109,7 @@ export default function Courses() {
         }
     }
     // function to handle adding a prerequisite group
-    async function  handleAddPrerequisiteGroup(e) {
+    async function handleAddPrerequisiteGroup(e) {
         e.preventDefault();
         const { course_id, prerequisiteIds } = groupForm;
         if (!course_id || prerequisiteIds.length === 0) {
@@ -151,8 +155,161 @@ export default function Courses() {
     }
 
     return (
-        <div>
-            <h1>Courses</h1>
-        </div>
+        <>
+            <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+            <Navbar />
+            <main style={{ paddingLeft: sidebarOpen ? '230px' : '0' }}>
+                {/* Filter by course level */}
+                <div className="filter-level">
+                    <label className="font-medium">Filter by Level:</label>
+                    <select
+                        className="filter-level-select"
+                        value={filterLevel}
+                        onChange={e => setFilterLevel(e.target.value)}
+                    >
+                        <option value="">All</option>
+                        <option value="undergraduate">Undergraduate</option>
+                        <option value="graduate">Graduate</option>
+                    </select>
+                    {/*<button className="reset-sort-button" onClick={() => {
+                        setFilterLevel("");
+                        fetchCourses();
+                    }}>
+                        Reset Filter
+                    </button>*/}
+                </div>
+                {/* List all courses table */}
+                <div className="courses-table">
+                    {/* TODO: add amount per page and more than 1 page */}
+                    <table className="displayed-courses">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                                <th>Credits</th>
+                                <th>Prerequisites</th>
+                                <th>Level</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loading ? (<tr><td colSpan="6">Loading...</td></tr>) : (
+                                courses.map(course => (
+                                    <tr key={course.id}>
+                                        <td>{course.course_code}</td>
+                                        <td>{course.title}</td>
+                                        <td>{course.credits}</td>
+                                        <td>{course.level}</td>
+                                        <td>{prereqGroupsDisplay(course.prerequisite_groups)}</td>
+                                        <td>
+                                            <button onClick={() => startEditing(course)} className="edit-button">Edit</button>
+                                            <button onClick={() => handleDeleteCourse(course)} className="delete-button">Delete</button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+                {/* Add course form */}
+                <div className="add-course-form">
+                    <h2>Add New Course</h2>
+                    <form onSubmit={handleAddCourse}>
+                        <div>
+                            <label>Course Code:</label>
+                            <input
+                                type="text"
+                                value={newCourse.course_code}
+                                onChange={e => setNewCourse({ ...newCourse, course_code: e.target.value })}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label>Title:</label>
+                            <input
+                                type="text"
+                                value={newCourse.title}
+                                onChange={e => setNewCourse({ ...newCourse, title: e.target.value })}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label>Credits:</label>
+                            <input
+                                type="number"
+                                value={newCourse.credits}
+                                onChange={e => setNewCourse({ ...newCourse, credits: Number(e.target.value) })}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label>Level:</label>
+                            <select
+                                value={newCourse.level}
+                                onChange={e => setNewCourse({ ...newCourse, level: e.target.value })}
+                                required
+                            >
+                                <option value="">Select Level</option>
+                                <option value="undergraduate">Undergraduate</option>
+                                <option value="graduate">Graduate</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Prerequisites:</label>
+                            <select
+                                multiple
+                                value={newCourse.prerequisiteIds}
+                                onChange={onGroupSelectChange}
+                            >
+                                {courses.map(course => (
+                                    <option key={course.id} value={course.id}>
+                                        {course.course_code} - {course.title}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <button type="submit">Add Course</button>
+                    </form>
+                </div>
+                {/* Add pre-requisites form */}
+                <div className="add-prerequisites-form">
+                    <h2>Add Prerequisite Group</h2>
+                    <form onSubmit={handleAddPrerequisiteGroup}>
+                        <label className="group-name-label">Select the course that this group applies to:</label>
+                        <select
+                            className="courseIDForm"
+                            value={groupForm.courseId}
+                            onChange={e => setGroupForm({ ...groupForm, courseId: e.target.value })}
+                            required
+                        >
+                            <option value="">Select Course</option>
+                            {courses.map(course => (
+                                <option key={course.id} value={course.id}>
+                                    {course.course_code} - {course.title}
+                                </option>
+                            ))}
+                        </select>
+                        
+                        <label className="group-name-label">Select Pre-Requisites for this OR-group (use Cntrl/cmd to multi-select):</label>
+                        <select
+                            multiple
+                            size={6}
+                            value={groupForm.prerequisiteIds.map(String)}
+                            onChange={e => onGroupPrereqSelectChange(e)}
+                            required
+                        >
+                            {courses.map(course => (
+                                <option key={course.id} value={course.id}>
+                                    {course.course_code} - {course.title}
+                                </option>
+                            ))}
+                        </select>
+                        <button type="submit">Add Prerequisite Group</button>
+                    </form>
+                    <p>Note: adding multiple prerequisites to a group acts as an AND operation.</p>
+                </div>
+
+            </main>
+        </>
     );
 }
