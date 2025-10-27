@@ -51,6 +51,37 @@ export default function Courses() {
             setLoading(false);
         }
     }
+    //function to import courses from a json file
+    async function importCoursesFromJson(jsonFile) {
+        try {
+            for (const course of jsonFile) {
+                await api.post("/courses", course);
+            }
+            await fetchCourses();
+        } catch (error) {
+            console.error("Error importing courses:", error);
+            alert("Failed to import courses. Please try again later.");
+        }
+    }
+    //function to export courses to a json file
+    async function exportCoursesToJson() {
+        try {
+            const response = await api.get("/courses");
+            const data = response.data;
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "courses.json";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Error exporting courses:", error);
+            alert("Failed to export courses. Please try again later.");
+        }
+    }
     // adds a new course to the database
     async function handleAddCourse(e) {
         e.preventDefault();
@@ -87,8 +118,7 @@ export default function Courses() {
             title: course.title,
             credits: course.credits,
             level: course.level,
-            //may work may not but we ball
-            prerequisiteGroups: course.prerequisiteGroups || [],
+
         });
     }
     // cancels editing a course
@@ -118,7 +148,8 @@ export default function Courses() {
         }
 
         try {
-            await api.post(`/courses/${course_id}/prerequisite-groups`, { prerequisite_ids: prerequisiteIds });
+            await api.post(`/courses/${course_id}/prerequisite-groups`,
+            { prerequisite_ids: prerequisiteIds });
             setGroupForm({ course_id: "", prerequisiteIds: [] });
             await fetchCourses();
         } catch (error) {
@@ -141,8 +172,8 @@ export default function Courses() {
 
     // function to handle multi-select for prerequisites
     function onGroupSelectChange(e) {
-        const selected = Array.from(e.target.selectedOptions, option => Number(option.value));
-        setGroupForm(prev => ({ ...prev, prerequisiteIds: selected }));
+        const selected = Array.from(e.target.selectedOptions, (opt) => Number(opt.value));
+        setGroupForm((s) => ({ ...s, prerequisiteIds: selected }));
     }
     // display prerequisite groups in human-readable format
     function prereqGroupsDisplay(prereqGroups = []) {
@@ -187,25 +218,66 @@ export default function Courses() {
                                 <th>Course Code</th>
                                 <th>Course Name</th>
                                 <th>Credits</th>
-                                <th>Prerequisites</th>
                                 <th>Level</th>
+                                <th>Prerequisites</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {loading ? (<tr><td colSpan="6">Loading...</td></tr>) : (
                                 courses.map(course => (
-                                    <tr key={course.id}>
-                                        <td>{course.course_code}</td>
-                                        <td>{course.title}</td>
-                                        <td>{course.credits}</td>
-                                        <td>{course.level}</td>
-                                        <td>{prereqGroupsDisplay(course.prerequisite_groups)}</td>
-                                        <td>
-                                            <button onClick={() => startEditing(course)} className="edit-button">Edit</button>
-                                            <button onClick={() => handleDeleteCourse(course)} className="delete-button">Delete</button>
-                                        </td>
-                                    </tr>
+                                    editingID === course.id ? (
+                                        <tr key={course.id} className="editing-row">
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    value={editingCourse.course_code || ""}
+                                                    onChange={e => setEditingCourse(s => ({ ...s, course_code: e.target.value }))}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    value={editingCourse.title || ""}
+                                                    onChange={e => setEditingCourse(s => ({ ...s, title: e.target.value }))}
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    value={editingCourse.credits ?? 0}
+                                                    onChange={e => setEditingCourse(s => ({ ...s, credits: Number(e.target.value) }))}
+                                                />
+                                            </td>
+                                            <td>
+                                                <select
+                                                    value={editingCourse.level || ""}
+                                                    onChange={e => setEditingCourse(s => ({ ...s, level: e.target.value }))}
+                                                >
+                                                    <option value="">Select Level</option>
+                                                    <option value="undergraduate">Undergraduate</option>
+                                                    <option value="graduate">Graduate</option>
+                                                </select>
+                                            </td>
+                                            <td>{prereqGroupsDisplay(course.prerequisiteGroups || course.prerequisite_groups)}</td>
+                                            <td>
+                                                <button type="button" onClick={() => saveEditing(course.id)} className="save-button">Save</button>
+                                                <button type="button" onClick={cancelEditing} className="cancel-button">Cancel</button>
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        <tr key={course.id}>
+                                            <td>{course.course_code}</td>
+                                            <td>{course.title}</td>
+                                            <td>{course.credits}</td>
+                                            <td>{course.level}</td>
+                                            <td>{prereqGroupsDisplay(course.prerequisiteGroups || course.prerequisite_groups)}</td>
+                                            <td>
+                                                <button onClick={() => startEditing(course)} className="edit-button">Edit</button>
+                                                <button onClick={() => handleDeleteCourse(course)} className="delete-button">Delete</button>
+                                            </td>
+                                        </tr>
+                                    )
                                 ))
                             )}
                         </tbody>
@@ -277,9 +349,9 @@ export default function Courses() {
                     <form onSubmit={handleAddPrerequisiteGroup}>
                         <label className="group-name-label">Select the course that this group applies to:</label>
                         <select
-                            className="courseIDForm"
-                            value={groupForm.courseId}
-                            onChange={e => setGroupForm({ ...groupForm, courseId: e.target.value })}
+                            className="course_id"
+                            value={groupForm.course_id}
+                            onChange={e => setGroupForm({ ...groupForm, course_id: e.target.value })}
                             required
                         >
                             <option value="">Select Course</option>
@@ -295,10 +367,10 @@ export default function Courses() {
                             multiple
                             size={6}
                             value={groupForm.prerequisiteIds.map(String)}
-                            onChange={e => onGroupPrereqSelectChange(e)}
+                            onChange={onGroupSelectChange}
                             required
                         >
-                            {courses.map(course => (
+                            {courses.map((course) => (
                                 <option key={course.id} value={course.id}>
                                     {course.course_code} - {course.title}
                                 </option>
@@ -308,7 +380,25 @@ export default function Courses() {
                     </form>
                     <p>Note: adding multiple prerequisites to a group acts as an AND operation.</p>
                 </div>
-
+                {/* Import/Export buttons */}
+                <div className="import-export-buttons">
+                    <input
+                        type="file"
+                        accept=".json"
+                        onChange={e => {
+                            const file = e.target.files[0];
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onload = async (event) => {
+                                    const json = JSON.parse(event.target.result);
+                                    await importCoursesFromJson(json);
+                                };
+                                reader.readAsText(file);
+                            }
+                        }}
+                    />
+                    <button onClick={exportCoursesToJson}>Export Courses to JSON</button>
+                </div>
             </main>
         </>
     );

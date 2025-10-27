@@ -13,6 +13,7 @@
     --accent-red: #e27a7a;
     --soft-red: #f28b82;
     --soft-blue: #a0c4ff;
+    --soft-green: #b2f2bb;
   }
 .filter-level {
     margin: 20px 50px;
@@ -155,4 +156,33 @@
 }
 .add-prerequisites-form button:hover {
     background-color: var(--soft-blue);
+}
+.editing-row input{
+    background-color: var(--soft-yellow);
+    text-align: left;
+    color: var(--text-dark);
+}
+.editing-row select {
+    background-color: var(--soft-yellow);
+    color: var(--text-dark);
+}
+.save-button {
+    padding: 0.3rem 0.6rem;
+    background-color: var(--accent-green);
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+.save-button:hover {
+    background-color: var(--soft-green);
+}
+.cancel-button {
+    padding: 0.3rem 0.6rem;
+    background-color: var(--accent-red);
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+.cancel-button:hover {
+    background-color: var(--soft-red);
 }
