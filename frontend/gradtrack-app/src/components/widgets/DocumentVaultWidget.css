@@ -6,10 +6,9 @@
   font-family: 'Poppins', sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
-  width: 100%;
   max-width: 660px;
-  margin: 0;
-  margin-top: 40px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .vault-widget:hover {
@@ -74,4 +73,32 @@
 
 .vault-link:hover {
   text-decoration: underline;
+}
+
+.forms-needed {
+  background-color: #ff8383;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #1f1f1f;
+  margin-left: 0.5rem;
+}
+
+.forms-needed-icon {
+  font-size: 1.5rem;
+}
+
+.forms-needed-text {
+  font-size: 1.25rem;
+  color: #1f1f1f;
+  margin-left: 0.5rem;
+}
+
+.forms-needed-completed {
+  background-color: #39c439;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #1f1f1f;
+  margin-left: 0.5rem;
 }

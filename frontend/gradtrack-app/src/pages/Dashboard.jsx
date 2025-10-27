@@ -5,6 +5,7 @@ import MajorCompletionWidget from '../components/widgets/MajorCompletionWidget';
 import DeadlineList from '../components/widgets/DeadlineList';
 import DocumentVault from '../components/widgets/DocumentVaultWidget';
 import AdvisorContactWidget from '../components/widgets/AdvisorContactWidget';
+import CalendarWidget from '../components/widgets/CalendarWidget';
 // import EvaluationStatus from '../components/widgets/EvaluationStatus';
 // import ReminderPanel from '../components/widgets/ReminderPanel';
 // import QuickActions from '../components/widgets/QuickActions';
@@ -14,7 +15,7 @@ import { UserContext } from '../context/UserContext';
 
 const Dashboard = () => {
   const [deadlines, setDeadlines] = useState([]);
-  const { user } = useContext(UserContext);
+  const { user, loading } = useContext(UserContext);
 
   useEffect(() => {
     // TODO: Replace with Laravel API call to /api/deadlines
@@ -25,6 +26,8 @@ const Dashboard = () => {
 
 
   }, []);
+
+
 
   return (
     <Layout>
@@ -40,14 +43,15 @@ const Dashboard = () => {
         <div className="dashboard-columns">
           <div className="dashboard-main">
             <h2 className="dashboard-section-title">Services</h2>
+            <CalendarWidget />
             <DocumentVault />
-            <AdvisorContactWidget studentId={1} />
+            <AdvisorContactWidget facultyId={user?.id || 1} />
             {/* Add other main widgets here */}
           </div>
 
           <div className="dashboard-side">
             <h2 className="dashboard-section-title">Progress Tracker</h2>
-            <MajorCompletionWidget studentId={user.id} />
+            <MajorCompletionWidget studentId={user?.id || 1} />
             <MilestoneCard />
             <DeadlineList deadlines={deadlines} />
           </div>

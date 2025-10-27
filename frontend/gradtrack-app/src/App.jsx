@@ -7,6 +7,8 @@ import Milestones from './pages/Milestones';
 import Documents from './pages/Documents';
 import Settings from './pages/Settings';
 import Courses from './pages/Courses';
+import FacultyDashboard from './pages/FacultyDashboard';
+
 function App() {
     return (
         <UserProvider>
@@ -19,6 +21,8 @@ function App() {
                 <main className="flex-grow container mx-auto px-4 py-6">
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/faculty-dashboard" element={<FacultyDashboard />} /> // TODO: MAKE protected route
                         <Route path="/signin" element={<Signin />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/milestones" element={<Milestones />} />

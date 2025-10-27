@@ -1,36 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AdvisorContactWidget.css';
 
-const AdvisorContactWidget = ({ studentId }) => {
+export default function AdvisorContactWidget({ facultyId }) {
   const [advisor, setAdvisor] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/advisor/${studentId}`)
-      .then(res => {
-        setAdvisor(res.data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Failed to fetch advisor:', err);
-        setLoading(false);
-      });
-  }, [studentId]);
+    axios.get(`/api/faculty/${facultyId}/with-students`)
+      .then(res => setAdvisor(res.data.faculty))
+      .catch(err => console.error(err));
+  }, [facultyId]);
 
-  if (loading) return <div className="advisor-widget">Loading advisor info...</div>;
-  if (!advisor) return <div className="advisor-widget">Advisor not found.</div>;
+  if (!advisor) return <div className="advisor-widget">Loading advisor info…</div>;
 
   return (
     <div className="advisor-widget">
-      <h3>Contact Your Advisor</h3>
-      <div className="advisor-info">
-        <p><strong>Name:</strong> {advisor.name}</p>
-        <p><strong>Email:</strong> <span className="advisor-email" onClick={() => window.location.href = `mailto:${advisor.email}`}>{advisor.email}</span></p>
-        <p><strong>Office:</strong> {advisor.office}</p>
-      </div>
+      <h3>{advisor.user.first_name} {advisor.user.last_name}</h3>
+      <p><strong>Title:</strong> {advisor.title}</p>
+      <p><strong>Office:</strong> {advisor.office}</p>
+      <p><strong>Department:</strong> {advisor.user.department}</p>
+
+      <h4>Advised Students</h4>
+      <ul>
+        {advisor.advised_students.map(student => (
+          <li key={student.student_id}>
+            {student.user.first_name} {student.user.last_name} – {student.program_type}
+          </li>
+        ))}
+      </ul>
     </div>
   );
-};
-
-export default AdvisorContactWidget;
+}

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/layout/Sidebar';
 import Navbar from '../components/layout/Navbar';
 import './Documents.css';
+import documentVaultApi from '../features/DocumentVault/api/documentVaultApi';
 
 const Documents = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -10,6 +11,8 @@ const Documents = () => {
   // Files state statically set for testing
   const [files, setFiles] = useState([]);
   const [searchString, setSearchString] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
 
   const fileTypes = ['application/pdf', 'application/docx', 'application/doc'];
 
@@ -77,6 +80,55 @@ const Documents = () => {
     }
   ]);
 
+ useEffect(() => {
+  loadDocuments();
+}, []);
+
+//Get documents from server
+const loadDocuments = async () => {
+  try {
+    setLoading(true);
+    const documents = await documentVaultApi.getAllDocuments();
+    const mappedFiles = (documents.map(document => ({
+      id: document.id,
+      name: document.file_name,
+      url: document.file_path,
+      size: formatFileSize(document.file_size),
+      type: document.file_type,
+      date: new Date(document.created_at).toLocaleDateString(),
+      tag: document.tag,
+      isRequired: document.is_required,
+      requiredDocumentType: document.required_document_type,
+    })));
+    setFiles(mappedFiles);
+    updateRequiredDocuments(mappedFiles);
+    setLoading(false);
+  } catch (error) {
+    console.error('Error loading documents:', error);
+    setLoading(false);
+  }
+}
+
+const updateRequiredDocuments = (uploadedFiles) => {
+  const updatedDocsStatus = requiredDocuments.map(doc => {
+    let isUploaded = false;
+
+    for(let i = 0; i < uploadedFiles.length; i++) {
+      const file = uploadedFiles[i];
+      if(file.isRequired && file.requiredDocumentType === doc.name) {
+        isUploaded = true;
+        break;
+      }
+    }
+    return {
+      ...doc,
+      uploaded: isUploaded,
+      status: isUploaded ? 'completed' : 'pending',
+    };
+  });
+  setRequiredDocuments(updatedDocsStatus);
+};
+
 
   // File dragging functionality
   const handleDragOver = (e) => {
@@ -111,21 +163,31 @@ const Documents = () => {
   }
 
   // File delete handling
-  const handleFileDelete = (id) => {
-    setFiles(files.filter((file) => file.id !== id));
-  }
+  const handleFileDelete = async (id) => {  
+    if(!confirm('Are you sure you want to delete this file?')) return;
+    try {
+      await documentVaultApi.deleteDocument(id);
+      setFiles(files.filter((file) => file.id !== id));
+      updateRequiredDocuments(files.filter((file) => file.id !== id));
+      alert('Document deleted successfully');
+    } catch (error) {
+      console.error('Error deleting document:', error);
+      alert('Failed to delete document');
+    }
+  };
 
   // Download files
   /*
   * ID: file to download
   */
-  const handleFileDownload = (id) => {
+  const handleFileDownload = async (id, file_name) => {
     const file = files.find(f => f.id === id)
-    if (file && file.url) {
-      const link = document.createElement('a'); //create a html element
-      link.href = file.url; //href to file url
-      link.download = file.name; //set file name
-      link.click();
+    if(!file) return;
+    try {
+      await documentVaultApi.downloadDocument(id, file.name);
+    } catch (error) {
+      console.error('Error downloading document:', error);
+      alert('Failed to download document');
     }
   }
 
@@ -158,7 +220,7 @@ const Documents = () => {
 
   // File upload handling
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-  const handleFileUpload = (file) => {
+  const handleFileUpload = async (file, requiredDocumentType = null) => {
     if (file.size > MAX_FILE_SIZE) {
       alert('File size must be less than 10MB');
       return;
@@ -167,20 +229,34 @@ const Documents = () => {
       alert('File type must be pdf or docx');
       return;
     }
-
-    const newFile = {
-      id: files.length + 1,
-      name: file.name,
-      tag: 'Untagged',
-      date: new Date().toLocaleDateString(),
-      size: formatFileSize(file.size),
-      type: getFileExtension(file.name),
-      url: URL.createObjectURL(file),
+    setUploading(true);
+    try {
+    const response = await documentVaultApi.uploadDocument(file,
+      'Untagged',
+      requiredDocumentType ? true : false,
+      requiredDocumentType
+    );
+      const newDocument = {
+        id: response.document.id,
+        name: response.document.file_name,
+        url: response.document.file_path,
+        size: formatFileSize(response.document.file_size),
+        type: response.document.file_type,
+        date: new Date(response.document.created_at).toLocaleDateString(),
+        tag: response.document.tag,
+        isRequired: response.document.is_required,
+        requiredDocumentType: response.document.required_document_type,
+      }
+      const updatedFiles = [...files, newDocument];
+      setFiles(updatedFiles);
+      updateRequiredDocuments(updatedFiles);
+      alert('Document uploaded successfully');
+      setUploading(false);
+    } catch (error) {
+      console.error('Error uploading document:', error);
+      alert('Failed to upload document');
+      setUploading(false);
     }
-
-    setFiles([...files, newFile]);
-    alert('File uploaded successfully');
-
   };
 
   return (
@@ -234,14 +310,40 @@ const Documents = () => {
                     {!doc.uploaded && (
                       <button
                         className="upload-required-btn"
-                        onClick={() => document.getElementById('file-input').click()}
+                        onClick={() =>{
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = '.pdf, .docx, .doc';
+                          input.onchange = (e) => {
+                            const file = e.target.files[0];
+                            handleFileUpload(file, doc.name);
+                          };
+                          input.click();
+                        }}
                       >
                         Upload {doc.name}
                       </button>
                     )}
                     {doc.uploaded && (
-                      <button className="view-uploaded-btn">View Document</button>
+                      <>
+                      <button className="view-uploaded-btn" onClick={() => {
+                        const uploadedDocument = files.find(file => file.isRequired && file.requiredDocumentType === doc.name);
+                        if(uploadedDocument) {
+                          handleFileDownload(uploadedDocument.id, uploadedDocument.name);
+                        }
+                      }}>View Document</button>
+                      <button className="action-btn delete" onClick={() => {
+                        const uploadedDocument = files.find(file => file.isRequired && file.requiredDocumentType === doc.name);
+                        if(uploadedDocument) {
+                          handleFileDelete(uploadedDocument.id);
+                        }
+                      }}>Delete</button>
+                    <span className="uploaded-file-name">
+                    {files.find(file => file.isRequired && file.requiredDocumentType === doc.name)?.name}
+                    </span>
+                    </>
                     )}
+
                   </div>
                 </div>
               ))}
@@ -286,5 +388,4 @@ const Documents = () => {
     </>
   );
 };
-
-export default Documents;
+export default Documents; 
