@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdvisorController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\EnrollmentController;
+// use App\Http\Controllers\MilestoneController;
+// use App\Http\Controllers\DeadlineController;
+// use App\Http\Controllers\EvaluationController;
+// use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
@@ -36,6 +43,24 @@ Route::get('/faculty/{id}/students', [FacultyController::class, 'getWithStudents
 
 // Existing routes
 Route::get('/major-completion/{studentId}', [RegistrarController::class, 'getCompletion']);
+Route::get('/advisor/{studentId}', [AdvisorController::class, 'show']);
+Route::get('/courses', [CourseController::class, 'index']);
+
+// Route::get('/milestones', [MilestoneController::class, 'index']);
+// Route::get('/deadlines', [DeadlineController::class, 'index']);
+// Route::get('/evaluations', [EvaluationController::class, 'index']);
+// Route::get('/notifications', [NotificationController::class, 'index']);
+Route::post('/advisor/message', [AdvisorController::class, 'sendMessage']);
+Route::post('/courses', [CourseController::class, 'store']);
+Route::post('/courses/{course}/prerequisites', [CourseController::class, 'addPrerequisite']);
+Route::post('/courses/{course}/prerequisite-groups', [CourseController::class, 'addPrerequisiteGroup']);
+
+Route::put('/courses/{course}', [CourseController::class, 'update']);
+Route::delete('/courses/{course}', [CourseController::class, 'destroy']);
+Route::delete('/courses/{course}/prerequisite-groups/{group_id}', [CourseController::class, 'removePrerequisiteGroup']);
+
+Route::apiResource('/courses', CourseController::class);
+Route::apiResource('/enrollments', EnrollmentController::class);
 
 // Application routes
 Route::get('/milestones', [MilestoneController::class, 'index']);
