@@ -10,8 +10,8 @@ class RegistrarController extends Controller
     {
         //TODO: Get IT to fetch real registrar data
         // Example logic — replace with real registrar integration
-        $completedCredits = 78;
-        $requiredCredits = 120;
+        $completedCredits = 5;
+        $requiredCredits = 30;
 
         $percentage = round(($completedCredits / $requiredCredits) * 100, 2);
 

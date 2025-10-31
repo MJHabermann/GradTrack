@@ -1,15 +1,19 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import { UserContext } from '../../context/UserContext';
 import './AdvisorContactWidget.css';
 
-export default function AdvisorContactWidget({ facultyId }) {
+const AdvisorWidget = () => {
+  const { user } = useContext(UserContext);
   const [advisor, setAdvisor] = useState(null);
 
   useEffect(() => {
-    axios.get(`/api/faculty/${facultyId}/with-students`)
+    if (!user || user.role !== 'faculty') return;
+
+    axios.get(`/api/faculty/${user.id}/with-students`)
       .then(res => setAdvisor(res.data.faculty))
-      .catch(err => console.error(err));
-  }, [facultyId]);
+      .catch(err => console.error('Failed to load advisor data:', err));
+  }, [user]);
 
   if (!advisor) return <div className="advisor-widget">Loading advisor info…</div>;
 
@@ -30,4 +34,6 @@ export default function AdvisorContactWidget({ facultyId }) {
       </ul>
     </div>
   );
-}
+};
+
+export default AdvisorWidget;
