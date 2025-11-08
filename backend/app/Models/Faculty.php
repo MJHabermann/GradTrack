@@ -10,11 +10,11 @@ class Faculty extends Model
     use HasFactory;
 
     protected $table = 'faculty';
+    protected $primaryKey = 'faculty_id';
+    public $incrementing = false;
 
     protected $fillable = [
         'faculty_id',
-        'first_name',
-        'last_name',
         'title',
         'office',
     ];
@@ -40,7 +40,7 @@ class Faculty extends Model
      */
     public function getFullNameAttribute(): string
     {
-        return trim($this->first_name . ' ' . $this->last_name);
+        return $this->user ? trim($this->user->first_name . ' ' . $this->user->last_name) : '';
     }
 
     /**

@@ -19,7 +19,7 @@ function App() {
             </nav>
                 <main className="flex-grow container mx-auto px-4 py-6">
                     <Routes>
-                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/" element={<Dashboard />} /> // TODO: Change to Sign in page when done
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/faculty-dashboard" element={<FacultyDashboard />} /> // TODO: MAKE protected route
                         <Route path="/signin" element={<Signin />} />
