@@ -7,6 +7,7 @@ import Milestones from './pages/Milestones';
 import Documents from './pages/Documents';
 import Settings from './pages/Settings';
 import FacultyDashboard from './pages/FacultyDashboard';
+import RemindersPage from './pages/RemindersPage';
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                         <Route path="/milestones" element={<Milestones />} />
                         <Route path="/documents" element={<Documents />} />
                         <Route path="/settings" element={<Settings />} />
+                        <Route path="/reminders" element={<RemindersPage />} />
                         {/* <Route path="/profile" element={<UserProfile />} />
                         <Route path="/admin" element={<AdminPanel />} /> */}
                     </Routes>
