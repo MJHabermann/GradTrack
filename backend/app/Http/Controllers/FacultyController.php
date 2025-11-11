@@ -13,7 +13,9 @@ class FacultyController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Faculty::with(['user', 'advisedStudents']);
+        $query = Faculty::where('faculty_id', $id)
+        ->with(['user', 'advisedStudents'])
+        ->firstOrFail();
 
         // Filter by title if provided
         if ($request->has('title')) {
@@ -180,8 +182,10 @@ class FacultyController extends Controller
      */
 public function getWithStudents(string $id)
 {
-    $faculty = Faculty::with(['user', 'advisedStudents.user'])->findOrFail($id);
-
+    $faculty = Faculty::where('faculty_id', $id)
+    ->with(['user', 'advisedStudents.user'])
+    ->firstOrFail();
+    
     return response()->json([
         'faculty' => [
             'faculty_id' => $faculty->faculty_id,
