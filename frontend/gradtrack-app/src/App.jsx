@@ -7,7 +7,10 @@ import Milestones from './pages/Milestones';
 import Documents from './pages/Documents';
 import Settings from './pages/Settings';
 import FacultyDashboard from './pages/FacultyDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import RemindersPage from './pages/RemindersPage';
+import AdminDocumentReview from './pages/AdminDocumentReview';
+
 
 function App() {
     return (
@@ -23,6 +26,8 @@ function App() {
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/faculty-dashboard" element={<FacultyDashboard />} /> // TODO: MAKE protected route
+                        <Route path="/admin-dashboard" element={<AdminDashboard />} /> 
+                        <Route path="/admin/documents" element={<AdminDocumentReview />} />
                         <Route path="/signin" element={<Signin />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/milestones" element={<Milestones />} />

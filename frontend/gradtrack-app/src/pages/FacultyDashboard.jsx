@@ -29,6 +29,7 @@ const FacultyDashboard = () => {
   return (
     <Layout>
       <div className="faculty-dashboard-container">
+       <div className="faculty-top-section">
         <div className="faculty-header">
           <h1>Welcome, {faculty.user.first_name} {faculty.user.last_name}</h1>
           <p>Title: {faculty.title}</p>
@@ -37,16 +38,24 @@ const FacultyDashboard = () => {
           <p>2 pending actions</p>
         </div>
 
+        <div className="calendar-container">
+          <CalendarWidget />
+        </div>
+      </div>
+
+
+
+
         <section className="to-do-section">
           <h2>To Do</h2>
           <div className="to-do-grid">
             <div className="alert-item">
-              <h3>⚠️ Alerts</h3>
+              <h3>Alerts</h3>
               <p>3 documents pending review</p>
               <p>1 student missing forms</p>
             </div>
             <div className="upcoming-item">
-              <h3>📅 Upcoming</h3>
+              <h3>Upcoming</h3>
               <p>John Smith - Approve (Nov 15)</p>
               <p>Committee Meeting (Nov 20)</p>
             </div>
