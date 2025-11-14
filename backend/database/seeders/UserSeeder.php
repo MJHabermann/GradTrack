@@ -36,6 +36,14 @@ class UserSeeder extends Seeder
         // Create faculty users
         $facultyUsers = [
             [
+                'first_name' => 'Faculty',
+                'last_name' => 'User',
+                'email' => 'faculty@gradtrack.com',
+                'password' => Hash::make('password'),
+                'role' => 'faculty',
+                'department' => 'Computer Science',
+            ],
+            [
                 'first_name' => 'Dr. Sarah',
                 'last_name' => 'Johnson',
                 'email' => 'sarah.johnson@gradtrack.com',

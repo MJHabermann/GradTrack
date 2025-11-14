@@ -19,6 +19,11 @@ class FacultySeeder extends Seeder
 
         $facultyData = [
             [
+                'faculty_id' => $facultyUsers->where('email', 'faculty@gradtrack.com')->first()->id,
+                'title' => 'Prof.',
+                'office' => 'CS Building Room 101',
+            ],
+            [
                 'faculty_id' => $facultyUsers->where('email', 'sarah.johnson@gradtrack.com')->first()->id,
                 'title' => 'Dr.',
                 'office' => 'CS Building Room 201',

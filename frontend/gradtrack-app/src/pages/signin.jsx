@@ -44,7 +44,7 @@ export default function Signin() {
             } else if(data.user.role === 'faculty') {
                 navigate('/faculty-dashboard');
             } else if(data.user.role === 'admin') {
-                navigate('/faculty-dashboard');
+                navigate('/admin-dashboard');
             }
         } catch (error) {
             setError(error.message || 'Login failed. Please try again.');
