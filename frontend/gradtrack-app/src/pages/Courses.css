@@ -1,0 +1,188 @@
+
+  /* Courses.css - Courses Page Styling */
+:root {
+    --cream-white: #fdfcf5;
+    --soft-yellow: #fcf8d8;
+    --text-dark: #333;
+    --text-muted: #777;
+    --border-soft: #f0eac2;
+    --accent-yellow: #f6e27f;
+    --white: #ffffff;
+    --accent-blue: #4a90e2;
+    --accent-green: #7ed6a3;
+    --accent-red: #e27a7a;
+    --soft-red: #f28b82;
+    --soft-blue: #a0c4ff;
+    --soft-green: #b2f2bb;
+  }
+.filter-level {
+    margin: 20px 50px;
+}
+
+.filter-level-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    background-color: var(--white);
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+.courses-table {
+    margin: 20px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.courses-table th, .courses-table td {
+    border: 1px solid var(--border-soft);
+    padding: 8px;
+    text-align: left;
+}
+
+.courses-table th {
+    background-color: var(--soft-yellow);
+    color: var(--text-dark);
+}
+
+.courses-table tr:nth-child(even) {
+    background-color: var(--cream-white);
+}
+
+.courses-table tr:hover {
+    background-color: var(--accent-yellow);
+    cursor: pointer;
+}
+.courses-table .edit-button {
+    padding: 0.3rem 0.6rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--accent-blue);
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.courses-table .edit-button:hover {
+    background-color: var(--soft-blue);
+}
+.courses-table .delete-button {
+    padding: 0.3rem 0.6rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--accent-red);
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.courses-table .delete-button:hover {
+    background-color: var(--soft-red);
+}
+.add-course-form {
+    margin: 20px;
+    border-collapse: collapse;
+    width: 100%;
+}
+.add-course-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.add-course-form input, .add-course-form select, .add-course-form textarea {
+    width: 50%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background-color: var(--white);
+    box-sizing: border-box;
+}
+.add-course-form button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--accent-blue);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.add-course-form button:hover {
+    background-color: var(--soft-blue);
+}
+.add-prerequisites-form {
+    margin: 20px;
+    border-collapse: collapse;
+    width: 100%;
+}
+.add-prerequisites-form h2 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+.add-prerequisites-form label {
+        display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.add-prerequisites-form input, .add-prerequisites-form select, .add-prerequisites-form textarea {
+    width: 50%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background-color: var(--white);
+    box-sizing: border-box;
+}
+.add-prerequisites-form form {
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-dark);
+}
+.add-prerequisites-form button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--accent-blue);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+.add-prerequisites-form button:hover {
+    background-color: var(--soft-blue);
+}
+.editing-row input{
+    background-color: var(--soft-yellow);
+    text-align: left;
+    color: var(--text-dark);
+}
+.editing-row select {
+    background-color: var(--soft-yellow);
+    color: var(--text-dark);
+}
+.save-button {
+    padding: 0.3rem 0.6rem;
+    background-color: var(--accent-green);
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+.save-button:hover {
+    background-color: var(--soft-green);
+}
+.cancel-button {
+    padding: 0.3rem 0.6rem;
+    background-color: var(--accent-red);
+    color: var(--text-dark);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+.cancel-button:hover {
+    background-color: var(--soft-red);
+}
