@@ -1,52 +1,77 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Layout from '../components/layout/Layout';
 import './FacultyDashboard.css';
 import DocumentVault from '../components/widgets/DocumentVaultWidget';
 import CalendarWidget from '../components/widgets/CalendarWidget';
+import {UserContext} from '../context/UserContext';
+import API_CONFIG from '../api/config';
 
 const FacultyDashboard = () => {
+  const { user } = useContext(UserContext);
   const [faculty, setFaculty] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  //Fetch faculty data from API
   useEffect(() => {
-    // Mock data for now - replace with API call later
-    setFaculty({
-      user: {
-        first_name: 'Facul',
-        last_name: 'Tea',
-      },
-      title: 'Associate Professor',
-      office: 'CS Building, Room 305',
-      advised_students: [
-        { student_id: 1, user: { first_name: 'John', last_name: 'Smith' }, program_type: 'PhD', start_term: 'Fall 2023' },
-        { student_id: 2, user: { first_name: 'Alice', last_name: 'Brown' }, program_type: 'Masters', start_term: 'Spring 2024' },
-        { student_id: 3, user: { first_name: 'Bob', last_name: 'Wilson' }, program_type: 'PhD', start_term: 'Fall 2022' },
-      ],
-    });
-  }, []);
+    const fetchFaculty = async () => {
+      setLoading(true);
+      try{
+        console.log('Fetching faculty data for user:', user.id);
+        const response = await API_CONFIG.request(`/api/faculty/${user.id}/students`, {
+          method: 'GET',
+        });
+        const data = await response.json();
+        setFaculty(data.faculty);
+      }
+      catch(error){
+        console.error('Error fetching faculty data:', error);
+        setFaculty(null);
+      }
+      finally{
+        setLoading(false);
+      }
+    };
+    if(user){
+      fetchFaculty();
+    }
+  }, [user]);
 
-  if (!faculty) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>;
+  if(!faculty) return <div>No faculty data found</div>;
 
   return (
     <Layout>
+      
       <div className="faculty-dashboard-container">
+       <div className="faculty-top-section">
         <div className="faculty-header">
           <h1>Welcome, {faculty.user.first_name} {faculty.user.last_name}</h1>
           <p>Title: {faculty.title}</p>
           <p>Office: {faculty.office}</p>
           <p>{faculty.advised_students.length} students advised</p>
           <p>2 pending actions</p>
+          <CalendarWidget />
         </div>
+        
+
+        <div className="calendar-container">
+          <CalendarWidget />
+        </div>
+      </div>
+
+
+
 
         <section className="to-do-section">
           <h2>To Do</h2>
           <div className="to-do-grid">
             <div className="alert-item">
-              <h3>⚠️ Alerts</h3>
+              <h3>Alerts</h3>
               <p>3 documents pending review</p>
               <p>1 student missing forms</p>
             </div>
             <div className="upcoming-item">
-              <h3>📅 Upcoming</h3>
+              <h3>Upcoming</h3>
               <p>John Smith - Approve (Nov 15)</p>
               <p>Committee Meeting (Nov 20)</p>
             </div>

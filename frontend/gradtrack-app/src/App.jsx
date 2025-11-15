@@ -8,6 +8,10 @@ import Documents from './pages/Documents';
 import Settings from './pages/Settings';
 import Courses from './pages/Courses';
 import FacultyDashboard from './pages/FacultyDashboard';
+import AdminDashboard from './pages/AdminDashboard';
+import RemindersPage from './pages/RemindersPage';
+import AdminDocumentReview from './pages/AdminDocumentReview';
+
 
 function App() {
     return (
@@ -20,15 +24,18 @@ function App() {
             </nav>
                 <main className="flex-grow container mx-auto px-4 py-6">
                     <Routes>
-                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/" element={<Dashboard />} /> // TODO: Change to Sign in page when done
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/faculty-dashboard" element={<FacultyDashboard />} /> // TODO: MAKE protected route
+                        <Route path="/admin-dashboard" element={<AdminDashboard />} /> 
+                        <Route path="/admin/documents" element={<AdminDocumentReview />} />
                         <Route path="/signin" element={<Signin />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/milestones" element={<Milestones />} />
                         <Route path="/documents" element={<Documents />} />
                         <Route path="/courses" element={<Courses />} />
                         <Route path="/settings" element={<Settings />} />
+                        <Route path="/reminders" element={<RemindersPage />} />
                         {/* <Route path="/profile" element={<UserProfile />} />
                         <Route path="/admin" element={<AdminPanel />} /> */}
                     </Routes>

@@ -76,3 +76,15 @@ Route::middleware('auth:sanctum')->group(function () { // Only authenticated use
     Route::get('/documents/{id}/download', [DocumentController::class, 'download']); // Download a document
     Route::delete('/documents/{id}', [DocumentController::class, 'destroy']); // Delete a document
 });
+
+// Student Reminders routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/reminders', [ReminderController::class, 'index']);
+    Route::post('/reminders', [ReminderController::class, 'store']);
+    Route::patch('/reminders/{id}', [ReminderController::class, 'update']);
+    Route::delete('/reminders/{id}', [ReminderController::class, 'destroy']);
+});
+
+// Deadline routes
+Route::get('/deadlines/scraped', [DeadlineController::class, 'getScrapedDeadlines']);
+

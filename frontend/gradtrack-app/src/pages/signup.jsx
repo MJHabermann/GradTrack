@@ -80,7 +80,7 @@ export default function Signup() {
             } else if(data.user.role === 'faculty') {
                 navigate('/faculty-dashboard');
             } else if(data.user.role === 'admin') {
-                navigate('/faculty-dashboard');
+                navigate('/admin-dashboard');
             }
         } catch (error) {
             console.error('Registration error:', error);

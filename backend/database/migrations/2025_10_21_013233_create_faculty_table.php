@@ -24,6 +24,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('faculty');
+        Schema::table('faculty', function (Blueprint $table) {
+            $table->string('first_name')->nullable()->after('faculty_id');
+            $table->string('last_name')->nullable()->after('first_name');
+        });
     }
 };
