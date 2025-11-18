@@ -10,7 +10,7 @@ import FacultyDashboard from './pages/FacultyDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import RemindersPage from './pages/RemindersPage';
 import AdminDocumentReview from './pages/AdminDocumentReview';
-
+import StudentDetails from './pages/StudentDetails';
 
 function App() {
     return (
@@ -34,6 +34,7 @@ function App() {
                         <Route path="/documents" element={<Documents />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/reminders" element={<RemindersPage />} />
+                        <Route path="/student-details/:studentId" element={<StudentDetails />} />
                         {/* <Route path="/profile" element={<UserProfile />} />
                         <Route path="/admin" element={<AdminPanel />} /> */}
                     </Routes>

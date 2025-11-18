@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import './FacultyDashboard.css';
 import DocumentVault from '../components/widgets/DocumentVaultWidget';
@@ -10,6 +11,7 @@ const FacultyDashboard = () => {
   const { user } = useContext(UserContext);
   const [faculty, setFaculty] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   //Fetch faculty data from API
   useEffect(() => {
@@ -50,7 +52,6 @@ const FacultyDashboard = () => {
           <p>Office: {faculty.office}</p>
           <p>{faculty.advised_students.length} students advised</p>
           <p>2 pending actions</p>
-          <CalendarWidget />
         </div>
         
 
@@ -86,7 +87,7 @@ const FacultyDashboard = () => {
                 <h3>{student.user.first_name} {student.user.last_name}</h3>
                 <p>Program: {student.program_type}</p>
                 <p>Started: {student.start_term}</p>
-                <button className="view-btn">View Details</button>
+                <button className="view-btn" onClick={() => navigate(`/student-details/${student.student_id}`)}>View Details</button>
               </div>
             ))}
           </div>
