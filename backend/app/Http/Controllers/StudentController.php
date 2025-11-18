@@ -141,6 +141,8 @@ class StudentController extends Controller
                 'start_term' => $student->start_term,
                 'i9_status' => $student->i9_status,
                 'deficiency_cleared' => $student->deficiency_cleared,
+                'user' => $student->user,
+                'major_professor' => $student->majorProfessor,
                 'graduation_term' => $student->graduation_term,
                 'updated_at' => $student->updated_at,
             ]
