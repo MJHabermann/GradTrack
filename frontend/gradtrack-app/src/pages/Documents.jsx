@@ -352,7 +352,6 @@ const updateRequiredDocuments = (uploadedFiles) => {
 
           {/* Upload */}
           <div className="upload-section" onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
-            <div className="upload-icon">📁</div>
             <div className="upload-text">Drop files here or click to upload</div>
             <div className="upload-subtext">Supports PDF, DOC, DOCX, images</div>
             <input type="file" onChange={handleFilePick} multiple id="file-input" style={{ display: 'none' }} />
@@ -364,7 +363,6 @@ const updateRequiredDocuments = (uploadedFiles) => {
             {fileSearch.map((file) => (
               <div key={file.id} className="file-card">
                 <div className="file-header">
-                  <div className="file-icon">📄</div>
                   <div className="file-info">
                     <div className="file-name">{file.name}</div>
                     <div className="file-meta">{file.size} • {file.date}</div>
