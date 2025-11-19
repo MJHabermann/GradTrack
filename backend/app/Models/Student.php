@@ -72,4 +72,12 @@ class Student extends Model
     {
         return trim($this->first_name . ' ' . $this->last_name);
     }
+
+    /**
+     * Get all documents for this student (via user relationship)
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'user_id', 'student_id');
+    }
 }
