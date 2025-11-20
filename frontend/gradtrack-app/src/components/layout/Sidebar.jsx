@@ -15,8 +15,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <li><Link to="/">Dashboard</Link></li>
             {/* <li><a href="#">Milestones</a></li>
             <li><a href="#">Deadlines</a></li>
-            <li><a href="#">Evaluations</a></li> */}
+            <li><a href="#">Evaluations</a></li> */
             <Link to="/reminders">Reminders</Link>
+            }
           </ul>
         )}
       </div>
