@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
-
+    protected $primaryKey = 'student_id';
     protected $fillable = [
         'student_id',
         'first_name',
@@ -73,6 +73,12 @@ class Student extends Model
         return trim($this->first_name . ' ' . $this->last_name);
     }
 
+    /**
+     * Get all documents for this student (via user relationship)
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'user_id', 'student_id');
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'student_courses')

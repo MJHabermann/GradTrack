@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
+  const { user } = useContext(UserContext);
+
+  // Determine dashboard route based on user role
+  const getDashboardRoute = () => {
+    if (!user || !user.role) return '/dashboard'; // Default to student dashboard
+    
+    switch (user.role) {
+      case 'student':
+        return '/dashboard';
+      case 'faculty':
+        return '/faculty-dashboard';
+      case 'admin':
+        return '/admin-dashboard';
+      default:
+        return '/dashboard';
+    }
+  };
+
   return (
     <>
       <div className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
@@ -12,6 +31,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         {isOpen && (
           <ul className="nav-links">
+            <li><Link to={getDashboardRoute()}>Dashboard</Link></li>
+            {/* <li><a href="#">Milestones</a></li>
             <li><Link to="/">Dashboard</Link></li>
            { /* <li><a href="#">Milestones</a></li>
             <li><a href="#">Deadlines</a></li>

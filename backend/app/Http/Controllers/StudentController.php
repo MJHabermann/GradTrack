@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\User;
+use App\Models\Document;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -141,6 +143,8 @@ class StudentController extends Controller
                 'start_term' => $student->start_term,
                 'i9_status' => $student->i9_status,
                 'deficiency_cleared' => $student->deficiency_cleared,
+                'user' => $student->user,
+                'major_professor' => $student->majorProfessor,
                 'graduation_term' => $student->graduation_term,
                 'updated_at' => $student->updated_at,
             ]
@@ -212,5 +216,93 @@ class StudentController extends Controller
         ]);
     }
 
+    /**
+     * Update or assign advisor for a student (Admin only)
+     * 
+     * @param Request $request
+     * @param string $id Student ID
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateAdvisor(Request $request, string $id)
+    {
+        $student = Student::with(['user', 'majorProfessor'])->findOrFail($id);
+
+        $request->validate([
+            'major_professor_id' => 'nullable|exists:users,id',
+        ]);
+
+        // If advisor is provided, validate that it's a faculty member
+        if ($request->has('major_professor_id') && $request->major_professor_id !== null) {
+            $advisor = User::findOrFail($request->major_professor_id);
+            
+            if ($advisor->role !== 'faculty') {
+                return response()->json([
+                    'message' => 'The specified user must be a faculty member to be assigned as an advisor.'
+                ], 422);
+            }
+        }
+
+        // Update the advisor
+        $student->major_professor_id = $request->major_professor_id;
+        $student->save();
+
+        // Reload relationships
+        $student->load(['user', 'majorProfessor']);
+
+        return response()->json([
+            'message' => $request->major_professor_id 
+                ? 'Advisor assigned successfully' 
+                : 'Advisor removed successfully',
+            'student' => [
+                'student_id' => $student->student_id,
+                'program_type' => $student->program_type,
+                'major_professor_id' => $student->major_professor_id,
+                'start_term' => $student->start_term,
+                'i9_status' => $student->i9_status,
+                'deficiency_cleared' => $student->deficiency_cleared,
+                'graduation_term' => $student->graduation_term,
+                'user' => $student->user,
+                'major_professor' => $student->majorProfessor,
+                'updated_at' => $student->updated_at,
+            ]
+        ]);
+    }
+
+    /**
+     * Get all documents for a specific student
+     */
+    public function getDocuments(string $id)
+    {
+        $student = Student::findOrFail($id);
+        
+        $documents = Document::where('user_id', $student->student_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'student_id' => $student->student_id,
+            'documents' => $documents
+        ]);
+    }
+
+    /**
+     * Download a specific document for a student
+     */
+    public function downloadDocument(string $studentId, string $documentId)
+    {
+        $student = Student::findOrFail($studentId);
+        $document = Document::findOrFail($documentId);
+
+        // Verify the document belongs to this student
+        if ($document->user_id != $student->student_id) {
+            return response()->json(['error' => 'Document does not belong to this student'], 403);
+        }
+
+        if (!Storage::exists($document->file_path)) {
+            return response()->json(['error' => 'File not found'], 404);
+        }
+
+        return Storage::download($document->file_path, $document->file_name);
+    }
     
 }

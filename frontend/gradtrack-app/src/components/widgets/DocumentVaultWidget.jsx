@@ -37,13 +37,11 @@ const DocumentVaultWidget = () => {
 
       {formsNeeded > 0 && (
         <div className="forms-needed">
-          <span className="forms-needed-icon">⚠️</span>
           <span className="forms-needed-text">Required forms need attention</span>
         </div>
       )}
       {formsNeeded === 0 && (
         <div className="forms-needed-completed">
-          <span className="forms-needed-icon">✅</span>
           <span className="forms-needed-text">Required forms completed</span>
         </div>
       )}

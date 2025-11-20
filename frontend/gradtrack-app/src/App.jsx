@@ -11,6 +11,7 @@ import FacultyDashboard from './pages/FacultyDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import RemindersPage from './pages/RemindersPage';
 import AdminDocumentReview from './pages/AdminDocumentReview';
+import StudentDetails from './pages/StudentDetails';
 import CoursePlanner from './pages/coursePlanner';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                         <Route path="/courses" element={<Courses />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/reminders" element={<RemindersPage />} />
+                        <Route path="/student-details/:studentId" element={<StudentDetails />} />
                         <Route path="/course-planner" element={<CoursePlanner />} />
                         {/* <Route path="/profile" element={<UserProfile />} />
                         <Route path="/admin" element={<AdminPanel />} /> */}

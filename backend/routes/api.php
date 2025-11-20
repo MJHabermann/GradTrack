@@ -36,6 +36,14 @@ Route::get('/users/role/{role}', [UserController::class, 'getByRole']);
 Route::apiResource('students', StudentController::class);
 Route::get('/students/program/{programType}', [StudentController::class, 'getByProgramType']);
 Route::get('/students/professor/{professorId}', [StudentController::class, 'getByMajorProfessor']);
+Route::get('/students/{id}/documents', [StudentController::class, 'getDocuments']);
+Route::get('/students/{studentId}/documents/{documentId}/download', [StudentController::class, 'downloadDocument']);
+
+// Admin-only routes for managing student advisors
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::put('/students/{id}/advisor', [StudentController::class, 'updateAdvisor']);
+    Route::patch('/students/{id}/advisor', [StudentController::class, 'updateAdvisor']);
+});
 
 // Faculty management routes
 Route::apiResource('faculty', FacultyController::class);

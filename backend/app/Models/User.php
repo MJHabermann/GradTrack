@@ -105,4 +105,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Faculty::class, 'faculty_id');
     }
+
+    /**
+     * Get all documents for this user
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }
