@@ -1,0 +1,792 @@
+[
+  {
+    "id": 1,
+    "course_code": "CS 1112",
+    "title": "Computational Thinking and Problem Solving",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 2,
+    "course_code": "CS 1120",
+    "title": "Computer Science I",
+    "credits": 4,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 3,
+    "course_code": "CS 1121",
+    "title": "Computer Science II",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 4,
+    "course_code": "CS 1550",
+    "title": "Computer Organization and Architecture",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 5,
+    "course_code": "CS 2100",
+    "title": "Programming Languages",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 6,
+    "course_code": "CS 2120",
+    "title": "Practical Python",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 7,
+    "course_code": "CS 2230",
+    "title": "System Software",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 8,
+    "course_code": "CS 2240",
+    "title": "Computer Operating Systems",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 9,
+    "course_code": "CS 3185",
+    "title": "Theory of Computation",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 10,
+    "course_code": "CS 3195",
+    "title": "Analysis of Algorithms",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 11,
+    "course_code": "CS 3360",
+    "title": "Introduction to Information Assurance",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 12,
+    "course_code": "CS 3383",
+    "title": "Software Engineering",
+    "credits": 4,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 13,
+    "course_code": "CS 3401",
+    "title": "Computer Graphics",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 14,
+    "course_code": "CS 3411",
+    "title": "Introduction to Computer Game Development",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 15,
+    "course_code": "CS 3551",
+    "title": "Introduction to Robotics",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 16,
+    "course_code": "CS 3600",
+    "title": "Database Systems",
+    "credits": 4,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 17,
+    "course_code": "CS 4010",
+    "title": "Contemporary Issues in Computer Science",
+    "credits": 1,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 18,
+    "course_code": "CS 4145",
+    "title": "Compiler Design",
+    "credits": 4,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 19,
+    "course_code": "CS 4200",
+    "title": "Data Communication Systems",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 20,
+    "course_code": "CS 4211",
+    "title": "Parallel Programming",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 21,
+    "course_code": "CS 4241",
+    "title": "Advanced Operating Systems",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 22,
+    "course_code": "CS 4380",
+    "title": "Network Security",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 23,
+    "course_code": "CS 4390",
+    "title": "Applied Security Concepts",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 24,
+    "course_code": "CS 4440",
+    "title": "Supervisory Control and Critical Infrastructure Systems",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 25,
+    "course_code": "CS 4441",
+    "title": "Multi-User Games and Virtual Environments",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 26,
+    "course_code": "CS 4470",
+    "title": "Digital Forensics",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 27,
+    "course_code": "CS 4501",
+    "title": "Advanced Computer Architecture",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 28,
+    "course_code": "CS 4502",
+    "title": "Real-Time Operating Systems",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 29,
+    "course_code": "CS 4543",
+    "title": "Embedded Systems",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 30,
+    "course_code": "CS 4553",
+    "title": "Robotic Systems Engineering I",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 31,
+    "course_code": "CS 4554",
+    "title": "Robotic Systems Engineering II",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 32,
+    "course_code": "CS 4556",
+    "title": "PLC Programming for Automation",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 33,
+    "course_code": "CS 4602",
+    "title": "Database Management Systems Design",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 34,
+    "course_code": "CS 4615",
+    "title": "Computational Biology: Sequence Analysis",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 35,
+    "course_code": "CS 4621",
+    "title": "Data Science",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 36,
+    "course_code": "CS 4622",
+    "title": "Applied Data Science with Python",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 37,
+    "course_code": "CS 4625",
+    "title": "Semantic Web and Open Data",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 38,
+    "course_code": "CS 4670",
+    "title": "Advanced PLC Programming",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 39,
+    "course_code": "CS 4701",
+    "title": "Artificial Intelligence",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 40,
+    "course_code": "CS 4712",
+    "title": "Machine Learning",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 41,
+    "course_code": "CS 4715",
+    "title": "Deep Learning",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 42,
+    "course_code": "CS 4718",
+    "title": "(s) Convex Optimization",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 43,
+    "course_code": "CS 4727",
+    "title": "Adversarial Machine Learning",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 44,
+    "course_code": "CS 4731",
+    "title": "Evolutionary Computation",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 45,
+    "course_code": "CS 4771",
+    "title": "Python for Machine Learning",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 46,
+    "course_code": "CS 4800",
+    "title": "CS Senior Capstone Design I",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 47,
+    "course_code": "CS 4810",
+    "title": "CS Senior Capstone Design II",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 48,
+    "course_code": "CS 4885",
+    "title": "Machine Vision",
+    "credits": 3,
+    "level": "undergraduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 49,
+    "course_code": "CS 5007",
+    "title": "CS and Cyber Research Methods",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 50,
+    "course_code": "CS 5200",
+    "title": "Data Communication Systems",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 51,
+    "course_code": "CS 5211",
+    "title": "Parallel Programming",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 52,
+    "course_code": "CS 5241",
+    "title": "Advanced Operating Systems",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 53,
+    "course_code": "CS 5360",
+    "title": "Advanced Information Assurance Concepts",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 54,
+    "course_code": "CS 5380",
+    "title": "Network Security",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 55,
+    "course_code": "CS 5390",
+    "title": "Applied Security Concepts",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 56,
+    "course_code": "CS 5440",
+    "title": "Supervisory Control and Critical Infrastructure Systems",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 57,
+    "course_code": "CS 5441",
+    "title": "Multi-User Games and Virtual Environments",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 58,
+    "course_code": "CS 5470",
+    "title": "Digital Forensics",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 59,
+    "course_code": "CS 5501",
+    "title": "Advanced Computer Architecture",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 60,
+    "course_code": "CS 5502",
+    "title": "Real-Time Operating Systems",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 61,
+    "course_code": "CS 5543",
+    "title": "Embedded Systems",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 62,
+    "course_code": "CS 5553",
+    "title": "Robotic Systems Engineering I",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 63,
+    "course_code": "CS 5554",
+    "title": "Robotic Systems Engineering II",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 64,
+    "course_code": "CS 5556",
+    "title": "PLC Programming for Automation",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 65,
+    "course_code": "CS 5602",
+    "title": "Database Management Systems Design",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 66,
+    "course_code": "CS 5615",
+    "title": "Computational Biology: Sequence Analysis",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 67,
+    "course_code": "CS 5621",
+    "title": "Data Science",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 68,
+    "course_code": "CS 5622",
+    "title": "Applied Data Science with Python",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 69,
+    "course_code": "CS 5625",
+    "title": "Semantic Web and Open Data",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 70,
+    "course_code": "CS 5670",
+    "title": "Advanced PLC Programming",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 71,
+    "course_code": "CS 5701",
+    "title": "Artificial Intelligence",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 72,
+    "course_code": "CS 5708",
+    "title": "Neural Network Design",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 73,
+    "course_code": "CS 5712",
+    "title": "Machine Learning",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 74,
+    "course_code": "CS 5715",
+    "title": "Deep Learning",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 75,
+    "course_code": "CS 5718",
+    "title": "(s) Convex Optimization",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 76,
+    "course_code": "CS 5727",
+    "title": "Adversarial Machine Learning",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 77,
+    "course_code": "CS 5731",
+    "title": "Evolutionary Computation",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 78,
+    "course_code": "CS 5771",
+    "title": "Python for Machine Learning",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  },
+  {
+    "id": 79,
+    "course_code": "CS 5885",
+    "title": "Machine Vision",
+    "credits": 3,
+    "level": "graduate",
+    "created_at": "2025-10-27T00:46:14.813924Z",
+    "updated_at": "2025-10-27T00:46:14.813924Z",
+    "prerequisite_groups": []
+  }
+]

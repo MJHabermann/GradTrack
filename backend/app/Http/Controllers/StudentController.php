@@ -304,4 +304,5 @@ class StudentController extends Controller
 
         return Storage::download($document->file_path, $document->file_name);
     }
+    
 }
