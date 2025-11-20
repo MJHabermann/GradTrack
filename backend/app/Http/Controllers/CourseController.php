@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Enrollment;
 use App\Models\PreRequisiteGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
@@ -86,9 +88,25 @@ class CourseController extends Controller
 
     public function destroy(Course $course)
     {
-        $course->prerequisites()->detach();
-        $course->delete();
-        return response()->json(['message' => 'Course deleted']);
+        try {
+            if (DB::connection()->getDriverName() === 'sqlite') {
+                DB::statement('PRAGMA foreign_keys = OFF');
+            }
+            Enrollment::where('course_id', $course->id)->delete();
+            DB::table('term_courses')->where('course_id', $course->id)->delete();
+            $course->prerequisites()->detach();
+            $course->prerequisiteGroups()->delete();
+            $course->delete();
+            if (DB::connection()->getDriverName() === 'sqlite') {
+                DB::statement('PRAGMA foreign_keys = ON');
+            }
+            return response()->json(['message' => 'Course deleted']);
+        } catch (\Exception $e) {
+            if (DB::connection()->getDriverName() === 'sqlite') {
+                DB::statement('PRAGMA foreign_keys = ON');
+            }
+            return response()->json(['message' => 'Error deleting course: ' . $e->getMessage()], 500);
+        }
     }
     
 }

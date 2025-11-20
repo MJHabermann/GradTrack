@@ -107,7 +107,8 @@ export default function Courses() {
             await fetchCourses();
         } catch (error) {
             console.error("Error deleting course:", error);
-            alert("Failed to delete course. Please try again later.");
+            const errorMsg = error.response?.data?.message || error.message || "Unknown error";
+            alert(`Failed to delete course: ${errorMsg}`);
         }
     }
     // starts editing a course
