@@ -13,11 +13,15 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {isOpen && (
           <ul className="nav-links">
             <li><Link to="/">Dashboard</Link></li>
-            {/* <li><a href="#">Milestones</a></li>
+           { /* <li><a href="#">Milestones</a></li>
             <li><a href="#">Deadlines</a></li>
-            <li><a href="#">Evaluations</a></li> */
-            <Link to="/reminders">Reminders</Link>
-            }
+            <li><a href="#">Evaluations</a></li> */}
+            <li><Link to="/reminders">Reminders</Link></li>
+            <li><Link to="/documents">Documents</Link></li>
+            <li><Link to="/course-planner">Course Planner</Link></li>
+            <li><Link to="/courses">Course Adder</Link></li>
+
+            
           </ul>
         )}
       </div>

@@ -72,4 +72,10 @@ class Student extends Model
     {
         return trim($this->first_name . ' ' . $this->last_name);
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'student_courses')
+                    ->withPivot(['planned_semester', 'status']);
+    }
 }

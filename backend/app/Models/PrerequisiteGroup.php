@@ -16,3 +16,4 @@ class PrerequisiteGroup extends Model
         return $this->belongsToMany(Course::class, 'group_prerequisites', 'prerequisite_group_id', 'prerequisite_id');
     }
 }
+

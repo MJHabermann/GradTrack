@@ -18,6 +18,8 @@ use App\Http\Controllers\DeadlineController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\TermController;
+use App\Http\Controllers\ReminderController;
 
 // Authentication routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -62,6 +64,12 @@ Route::delete('/courses/{course}/prerequisite-groups/{group_id}', [CourseControl
 Route::apiResource('/courses', CourseController::class);
 Route::apiResource('/enrollments', EnrollmentController::class);
 
+// Scheduler / terms
+Route::get('/students/{student}/schedule', [TermController::class, 'index']);
+Route::post('/students/{student}/terms', [TermController::class, 'store']);
+Route::post('/students/{student}/terms/{term}/courses', [TermController::class, 'addCourse']);
+Route::delete('/students/{student}/terms/{term}/courses/{course}', [TermController::class, 'removeCourse']);
+
 // Application routes
 Route::get('/milestones', [MilestoneController::class, 'index']);
 Route::get('/deadlines', [DeadlineController::class, 'index']);
@@ -87,4 +95,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Deadline routes
 Route::get('/deadlines/scraped', [DeadlineController::class, 'getScrapedDeadlines']);
+
+
 
