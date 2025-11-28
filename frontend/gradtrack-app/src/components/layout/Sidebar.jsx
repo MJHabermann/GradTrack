@@ -41,7 +41,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <li><Link to="/documents">Documents</Link></li>
             <li><Link to="/course-planner">Course Planner</Link></li>
             <li><Link to="/courses">Course Adder</Link></li>
-
+            <li><Link to="/admin-dashboard">Admin Dashboard</Link></li>
+            <li><Link to="/faculty-dashboard">Faculty Dashboard</Link></li>
             
           </ul>
         )}

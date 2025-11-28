@@ -79,6 +79,8 @@ class Student extends Model
     public function documents()
     {
         return $this->hasMany(Document::class, 'user_id', 'student_id');
+    }
+
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'student_courses')
