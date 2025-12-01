@@ -99,6 +99,8 @@ const loadDocuments = async () => {
       tag: document.tag,
       isRequired: document.is_required,
       requiredDocumentType: document.required_document_type,
+      status: document.status || 'Pending Review',
+      reviewComment: document.review_comment || null,
     })));
     setFiles(mappedFiles);
     updateRequiredDocuments(mappedFiles);
@@ -111,19 +113,17 @@ const loadDocuments = async () => {
 
 const updateRequiredDocuments = (uploadedFiles) => {
   const updatedDocsStatus = requiredDocuments.map(doc => {
-    let isUploaded = false;
-
-    for(let i = 0; i < uploadedFiles.length; i++) {
-      const file = uploadedFiles[i];
-      if(file.isRequired && file.requiredDocumentType === doc.name) {
-        isUploaded = true;
-        break;
-      }
-    }
+    const uploadedFile = uploadedFiles.find(
+      file => file.isRequired && file.requiredDocumentType === doc.name
+    );
+    
     return {
       ...doc,
-      uploaded: isUploaded,
-      status: isUploaded ? 'completed' : 'pending',
+      uploaded: !!uploadedFile,
+      status: uploadedFile ? uploadedFile.status || 'Pending Review' : 'pending',
+      reviewStatus: uploadedFile ? uploadedFile.status : null,
+      reviewComment: uploadedFile ? uploadedFile.reviewComment : null,
+      uploadedFile: uploadedFile || null,
     };
   });
   setRequiredDocuments(updatedDocsStatus);
@@ -295,16 +295,33 @@ const updateRequiredDocuments = (uploadedFiles) => {
             <h3>Required Documents</h3>
             <div className="required-docs-list">
               {requiredDocuments.map(doc => (
-                <div key={doc.id} className={`required-doc-item ${doc.uploaded ? 'completed' : 'pending'}`}>
+                <div 
+                  key={doc.id} 
+                  className={`required-doc-item ${doc.uploaded ? 'completed' : 'pending'}`}
+                  data-status={doc.reviewStatus || (doc.uploaded ? 'Pending Review' : null)}
+                >
                   <div className="doc-header">
                     <span className="doc-name">{doc.name}</span>
-                    <span className={`doc-status ${doc.status}`}>
-                      {doc.uploaded ? 'Uploaded' : 'Missing'}
-                    </span>
+                    <div className="doc-status-container">
+                      {doc.uploaded ? (
+                        <span className={`doc-status-badge ${doc.reviewStatus ? doc.reviewStatus.toLowerCase().replace(/\s+/g, '-') : 'pending-review'}`}>
+                          {doc.reviewStatus || 'Pending Review'}
+                        </span>
+                      ) : (
+                        <span className="doc-status missing">Missing</span>
+                      )}
+                    </div>
                   </div>
                   <div className="doc-details">
                     <span className="due-date">Due: {doc.dueDate}</span>
                     <span className="doc-description">{doc.description}</span>
+                    
+                    {doc.reviewComment && doc.reviewStatus === 'Declined' && (
+                      <div className="required-doc-review-comment">
+                        <strong>Decline Reason:</strong>
+                        <span className="comment-text">{doc.reviewComment}</span>
+                      </div>
+                    )}
                   </div>
                   <div className="doc-actions">
                     {!doc.uploaded && (
@@ -368,14 +385,25 @@ const updateRequiredDocuments = (uploadedFiles) => {
                     <div className="file-meta">{file.size} • {file.date}</div>
                     <div className="file-tags">
                       <span className="file-tag">{file.tag}</span>
+                      {file.status && (
+                        <span className={`file-status-badge ${file.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                          {file.status}
+                        </span>
+                      )}
                     </div>
+                    {file.reviewComment && file.status === 'Declined' && (
+                      <div className="file-review-comment">
+                        <strong>Review Comment:</strong>
+                        <p className="comment-text">{file.reviewComment}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="file-actions">
                   {/*!-- Add preview if time permits
                 <button className="action-btn" onClick={() => handleFilePreview(file.id)}>Preview</button>
                 */}
-                  <button className="action-btn" onClick={() => handleFileDownload(file.id)}>Download</button>
+                  <button className="action-btn" onClick={() => handleFileDownload(file.id, file.name)}>Download</button>
                   <button className="action-btn delete" onClick={() => handleFileDelete(file.id)}>Delete</button>
                 </div>
               </div>

@@ -14,7 +14,7 @@ return new class extends Migration
         if (! Schema::hasTable('terms')) {
             Schema::create('terms', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+                $table->foreignId('student_id')->constrained('students', 'student_id')->onDelete('cascade');
                 $table->string('name')->nullable();
                 $table->integer('order')->default(0);
                 $table->timestamps();
