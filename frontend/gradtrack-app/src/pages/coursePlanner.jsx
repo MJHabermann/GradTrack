@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Sidebar from '../components/layout/Sidebar';
 import Navbar from '../components/layout/Navbar';
+import PrerequisiteModal from '../components/PrerequisiteModal';
 import axios from "axios";
 import './coursePlanner.css'
 
@@ -20,14 +21,35 @@ export default function CoursePlanner() {
     const startXRef = useRef(0);
     const scrollLeftRef = useRef(0);
     const [, setIsDragging] = useState(false);
+    const [showPrereqModal, setShowPrereqModal] = useState(false);
+    const [hasCompletedCourses, setHasCompletedCourses] = useState(false);
     //query student ID from auth context or similar in real app
-    const studentId = 1;
+    const studentId = useRef(null);
 
     useEffect(() => {
         api
             .get('/courses')
             .then(res => setCourses(res.data || []))
             .catch(err => console.error('Failed to load courses', err));
+        
+        api 
+            .get('/me')
+            .then(res => {
+                const studentId = res.data.id;
+                return studentId;
+            })
+            .catch(err => console.error('Failed to load user info', err))
+        api
+            .get(`/students/${studentId}/enrollments`)
+            .then(res => {
+              const enrollments = res.data || [];
+              const hasCompleted = enrollments.some(e => e.status === 'completed');
+              setHasCompletedCourses(hasCompleted);
+              if (!hasCompleted) {
+                setShowPrereqModal(true);
+              }
+            })
+            .catch(err => console.error('Failed to load enrollments', err));
     }, []);
 
     const filtered = courses.filter(c => {
