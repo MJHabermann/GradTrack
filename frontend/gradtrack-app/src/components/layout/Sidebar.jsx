@@ -38,11 +38,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <li><a href="#">Deadlines</a></li>
             <li><a href="#">Evaluations</a></li> */}
             <li><Link to="/reminders">Reminders</Link></li>
-            <li><Link to="/documents">Documents</Link></li>
+            {user?.role === 'student' && (
+              <li><Link to="/documents">Documents</Link></li>
+            )}
+            {(user?.role === 'admin' || user?.role === 'faculty') && (
+              <li><Link to="/admin/documents">Document Review</Link></li>
+            )}
             <li><Link to="/course-planner">Course Planner</Link></li>
             <li><Link to="/courses">Course Adder</Link></li>
-
-            
           </ul>
         )}
       </div>

@@ -13,8 +13,8 @@ const AdminDocumentReviewWidget = () => {
 
   const loadPendingDocuments = async () => {
     try {
-      const documents = await documentVaultApi.getAllDocuments();
-      const pending = documents.filter(doc => doc.status === 'pending_review');
+      const documents = await documentVaultApi.getAllDocumentsForReview();
+      const pending = documents.filter(doc => doc.status === 'Pending Review');
       setPendingCount(pending.length);
     } catch (error) {
       console.error('Error loading pending documents:', error);
