@@ -456,6 +456,9 @@
   color: #666;
   max-width: 300px;
   line-height: 1.5;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: normal;
 }
 
 .doc-date-cell {
@@ -464,7 +467,34 @@
 }
 
 .doc-status-cell {
-  text-align: center;
+  text-align: left;
+  vertical-align: top;
+}
+
+.document-status-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.uploaded-file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.uploaded-file-info small {
+  display: block;
+}
+
+.no-document-badge {
+  color: #999;
+  font-size: 0.85rem;
+  font-style: italic;
 }
 
 .doc-actions-cell {
@@ -491,4 +521,160 @@
   color: #999;
   font-style: italic;
   font-size: 0.9rem;
+}
+
+.no-documents-cell {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+  font-style: italic;
+}
+
+.doc-type-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Document status badges - more specific to avoid conflicts */
+.doc-status-cell .status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.doc-status-cell .status-badge.approved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.doc-status-cell .status-badge.declined {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.doc-status-cell .status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.review-comment-preview {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-left: 3px solid #e74c3c;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.review-comment-preview strong {
+  color: #721c24;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.doc-review-cell {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.review-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.approve-btn-small {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.approve-btn-small:hover:not(:disabled) {
+  background-color: #229954;
+}
+
+.decline-btn-small {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.decline-btn-small:hover:not(:disabled) {
+  background-color: #c0392b;
+}
+
+.approve-btn-small:disabled,
+.decline-btn-small:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reviewed-badge {
+  color: #6c757d;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.decline-reason-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-top: 0.5rem;
+}
+
+.decline-reason-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 0.25rem;
+}
+
+.submit-decline-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-decline-btn:hover:not(:disabled) {
+  background-color: #c0392b;
+}
+
+.submit-decline-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
