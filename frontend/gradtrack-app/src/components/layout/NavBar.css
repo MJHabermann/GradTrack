@@ -2,6 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   height: 72px;
   background-color: #fcfcf7;
   border-bottom: 1px solid #f0eac2;
@@ -11,16 +12,14 @@
   padding: 0 2rem;
   font-family: 'Poppins', sans-serif;
   z-index: 100;
-  transition: width 0.3s ease, left 0.3s ease;
+  transition: left 0.3s ease;
 }
 
 .navbar.with-sidebar {
-  width: calc(100% - 220px);
   left: 220px;
 }
 
 .navbar.full-width {
-  width: 100%;
   left: 0;
 }
 
