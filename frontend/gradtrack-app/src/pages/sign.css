@@ -39,10 +39,14 @@
     background-color: #575757;
 }
 
-.logo {
-    height: 30vh;
-    width: 30vh;
+.login-page .logo {
+    height: 30vh !important;
+    width: 30vh !important;
     border-radius: 50px;
+    padding: 0;
+    object-fit: contain;
+    transition: filter 300ms;
+    will-change: filter;
 }
 
 .login-page h1 {

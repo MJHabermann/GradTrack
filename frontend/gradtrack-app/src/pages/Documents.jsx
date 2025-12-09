@@ -30,7 +30,7 @@ const Documents = () => {
     },
     {
       id: 2,
-      name: 'Official Transcripts',
+      name: 'Transcripts',
       required: true,
       dueDate: '2025-10-25',
       fileTypes: ['pdf'],

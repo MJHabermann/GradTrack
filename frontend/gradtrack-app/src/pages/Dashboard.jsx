@@ -52,7 +52,7 @@ const Dashboard = () => {
           <div className="dashboard-side">
             <h2 className="dashboard-section-title">Progress Tracker</h2>
             <MajorCompletionWidget studentId={user?.id || 1} />
-            <MilestoneCard />
+            <MilestoneCard studentId={user?.id} />
             <DeadlineList deadlines={deadlines} />
           </div>
         </div>
