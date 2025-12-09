@@ -189,8 +189,8 @@ export default function Courses() {
     return (
         <>
             <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-            <Navbar />
-            <main style={{ paddingLeft: sidebarOpen ? '230px' : '0' }}>
+            <Navbar sidebarOpen={sidebarOpen} />
+            <main style={{ paddingLeft: sidebarOpen ? '20rem' : '5rem' }}>
                 {/* Filter by course level */}
                 <div className="filter-level">
                     <label className="font-medium">Filter by Level:</label>

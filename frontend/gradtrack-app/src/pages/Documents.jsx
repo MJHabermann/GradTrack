@@ -261,9 +261,9 @@ const updateRequiredDocuments = (uploadedFiles) => {
 
   return (
     <>
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-      <Navbar />
-      <main style={{ paddingLeft: sidebarOpen ? '230px' : '0' }}>
+    <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+      <main style={{ paddingLeft: sidebarOpen ? '20rem' : '5rem' }}>
+      <Navbar sidebarOpen={sidebarOpen} />
         <div className="documents-container">
           <div className="documents-header">
             <h1>Document Vault</h1>
