@@ -86,6 +86,7 @@ Route::apiResource('/enrollments', EnrollmentController::class);
 
 // Student enrollments and terms routes
 Route::get('/students/{student}/enrollments', [StudentController::class, 'getEnrollments']);
+Route::post('/students/{student}/prereq-modal-completed', [StudentController::class, 'markPrereqModalCompleted']);
 
 // Scheduler / terms
 Route::get('/students/{student}/schedule', [TermController::class, 'index']);

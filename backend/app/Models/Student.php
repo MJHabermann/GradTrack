@@ -19,10 +19,12 @@ class Student extends Model
         'i9_status',
         'deficiency_cleared',
         'graduation_term',
+        'prereq_modal_completed',
     ];
 
     protected $casts = [
         'deficiency_cleared' => 'boolean',
+        'prereq_modal_completed' => 'boolean',
     ];
 
     /**

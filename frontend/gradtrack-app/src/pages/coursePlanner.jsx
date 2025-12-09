@@ -12,12 +12,8 @@ const api = axios.create({
 // Add auth token to all requests
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('auth_token');
-    console.log('Token from localStorage:', token ? token.substring(0, 20) + '...' : 'NOT FOUND');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
-        console.log('Authorization header set:', config.headers.Authorization.substring(0, 30) + '...');
-    } else {
-        console.warn('No auth token found in localStorage!');
     }
     return config;
 });
@@ -34,9 +30,7 @@ export default function CoursePlanner() {
     const isDownRef = useRef(false);
     const startXRef = useRef(0);
     const scrollLeftRef = useRef(0);
-    const [, setIsDragging] = useState(false);
     const [showPrereqModal, setShowPrereqModal] = useState(false);
-    const [hasCompletedCourses, setHasCompletedCourses] = useState(false);
     const [studentId, setStudentId] = useState(null);
     const [completedPrerequisites, setCompletedPrerequisites] = useState([]);
 
@@ -52,39 +46,42 @@ export default function CoursePlanner() {
         api 
             .get('/me')
             .then(res => {
-                console.log('ME response:', res.data);
                 const student = res.data.user?.student;
                 if (student && student.student_id) {
-                    console.log('Setting studentId from student table:', student.student_id);
                     setStudentId(student.student_id);
                 } else {
-                    console.error('No student record found for authenticated user', res.data);
+                    console.error('No student record found for authenticated user');
                 }
             })
-            .catch(err => {
-                console.error('Failed to load user info');
-                console.error('Status:', err.response?.status);
-                console.error('Data:', err.response?.data);
-                console.error('Headers sent:', err.config?.headers);
-                console.error('Full error:', err);
-            });
+            .catch(err => console.error('Failed to load user info', err));
     }, []);
 
     // Load saved terms from backend after studentId is set
     useEffect(() => {
-        if (!studentId) return;
+        if (!studentId) {
+            return;
+        }
         
-        console.log('Fetching saved terms for student ID:', studentId);
+        // Check if prerequisite modal has already been completed for this student (from database)
+        api
+            .get(`/me`)
+            .then(res => {
+                const student = res.data.user?.student;
+                if (student && student.prereq_modal_completed) {
+                    setShowPrereqModal(false);
+                } else {
+                    setShowPrereqModal(true);
+                }
+            })
+            .catch(err => console.error('Failed to check prereq modal status', err));
+        
         api
             .get(`/students/${studentId}/schedule`)
             .then(res => {
               const savedTerms = res.data || [];
-              console.log('Loaded terms from backend:', savedTerms);
-              console.log('First term courses:', savedTerms[0]?.courses);
               
               // Transform backend terms to frontend format
-              const transformedTerms = savedTerms.map((term, index) => {
-                console.log(`Transforming term ${term.id}:`, term);
+              const transformedTerms = savedTerms.map((term) => {
                 return {
                   id: term.id,
                   season: term.name?.split(' ')[0] || 'Fall',
@@ -95,7 +92,6 @@ export default function CoursePlanner() {
                 };
               });
               
-              console.log('Transformed terms:', transformedTerms);
               setTerms(transformedTerms);
               if (transformedTerms.length > 0) {
                 setNextTermId(Math.max(...transformedTerms.map(t => t.id)) + 1);
@@ -103,35 +99,18 @@ export default function CoursePlanner() {
             })
             .catch(err => console.error('Failed to load terms', err));
         
-        // Check if prerequisite modal has already been completed for this student
-        const prereqCompleted = localStorage.getItem(`prereq_modal_completed_${studentId}`);
-        if (prereqCompleted) {
-            console.log('Prerequisite modal already completed for this student');
-            setShowPrereqModal(false);
-        }
-        
-        // Check if student has any completed courses
-        console.log('Fetching enrollments for student ID:', studentId);
+        // Load completed prerequisites for display
         api
             .get(`/students/${studentId}/enrollments`)
             .then(res => {
               const enrollments = res.data || [];
-              const hasCompleted = enrollments.some(e => e.status === 'completed');
-              console.log('Has completed courses:', hasCompleted);
-              setHasCompletedCourses(hasCompleted);
               
               // Extract completed prerequisites with course details
               const completed = enrollments
                 .filter(e => e.status === 'completed')
                 .map(e => e.course)
                 .filter(Boolean);
-              console.log('Completed prerequisites:', completed);
               setCompletedPrerequisites(completed);
-              
-              if (!hasCompleted && !prereqCompleted) {
-                console.log('Showing prerequisite modal');
-                setShowPrereqModal(true);
-              }
             })
             .catch(err => console.error('Failed to load enrollments', err));
     }, [studentId]);
@@ -213,7 +192,6 @@ export default function CoursePlanner() {
         const el = termsRowRef.current;
         if (!el) return;
         isDownRef.current = true;
-        setIsDragging(true);
         el.classList.add('dragging');
         startXRef.current = e.pageX - el.offsetLeft;
         scrollLeftRef.current = el.scrollLeft;
@@ -231,7 +209,6 @@ export default function CoursePlanner() {
     function onTermsMouseUp() {
         const el = termsRowRef.current;
         isDownRef.current = false;
-        setIsDragging(false);
         if (el) el.classList.remove('dragging');
     }
 
@@ -375,7 +352,6 @@ export default function CoursePlanner() {
               
               if (isProgramCourse && !isNotTaken) {
                 // This course is completed (they didn't check it as not taken)
-                console.log(`Creating enrollment for course ${course.id} (${course.course_code}) with student_id ${studentId}`);
                 try {
                   await api.post('/enrollments', {
                     student_id: studentId,
@@ -389,22 +365,21 @@ export default function CoursePlanner() {
               }
             }
             
+            // Mark prerequisite modal as completed in the database
+            await api.post(`/students/${studentId}/prereq-modal-completed`);
+            
             setShowPrereqModal(false);
-            setHasCompletedCourses(true);
-            // Mark prerequisite modal as completed for this student
-            localStorage.setItem(`prereq_modal_completed_${studentId}`, 'true');
             alert('Prerequisites marked as completed!');
         } catch (err) {
             console.error('Failed to mark prerequisites as completed', err);
-            console.error('Error response:', err.response?.data);
-            console.error('Error status:', err.response?.status);
             alert('Failed to save prerequisites. Please try again.');
         }
     }
 
     function handleClosePrereqModal() {
-        // Mark prerequisite modal as completed for this student even if skipped
-        localStorage.setItem(`prereq_modal_completed_${studentId}`, 'true');
+        // Mark prerequisite modal as completed in the database even if skipped
+        api.post(`/students/${studentId}/prereq-modal-completed`)
+            .catch(err => console.error('Failed to mark modal as completed', err));
         setShowPrereqModal(false);
     }
 

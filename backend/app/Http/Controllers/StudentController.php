@@ -314,5 +314,18 @@ class StudentController extends Controller
 
         return response()->json($enrollments);
     }
+
+    /**
+     * Mark prerequisite modal as completed for a student
+     */
+    public function markPrereqModalCompleted(Student $student)
+    {
+        $student->update(['prereq_modal_completed' => true]);
+        
+        return response()->json([
+            'message' => 'Prerequisite modal marked as completed',
+            'student' => $student
+        ]);
+    }
     
 }
