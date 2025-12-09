@@ -36,10 +36,39 @@ class CourseController extends Controller
             'title' => 'required|string',
             'credits' => 'required|integer|min:0',
             'level' => 'required|in:undergraduate,graduate',
+            'prerequisite_groups' => 'nullable|array',
         ]);
 
         $course = Course::create($validated);
-        return response()->json(['message' => 'Course created successfully', 'course' => $course], 201);
+        
+        // Handle prerequisite_groups if provided during import
+        if ($request->has('prerequisite_groups') && is_array($request->input('prerequisite_groups'))) {
+            foreach ($request->input('prerequisite_groups') as $groupData) {
+                if (isset($groupData['prerequisites']) && is_array($groupData['prerequisites'])) {
+                    // Create the prerequisite group
+                    $group = $course->prerequisiteGroups()->create();
+                    
+                    // Extract prerequisite course codes and find their IDs
+                    $prerequisiteIds = [];
+                    foreach ($groupData['prerequisites'] as $prereqData) {
+                        if (isset($prereqData['course_code'])) {
+                            // Find the prerequisite course by course_code
+                            $prereqCourse = Course::where('course_code', $prereqData['course_code'])->first();
+                            if ($prereqCourse) {
+                                $prerequisiteIds[] = $prereqCourse->id;
+                            }
+                        }
+                    }
+                    
+                    // Attach the prerequisites to the group
+                    if (!empty($prerequisiteIds)) {
+                        $group->prerequisites()->attach($prerequisiteIds);
+                    }
+                }
+            }
+        }
+        
+        return response()->json(['message' => 'Course created successfully', 'course' => $course->load('prerequisiteGroups.prerequisites')], 201);
     }
 
     public function update(Request $request, Course $course)

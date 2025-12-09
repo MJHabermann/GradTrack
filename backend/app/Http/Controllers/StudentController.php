@@ -304,5 +304,15 @@ class StudentController extends Controller
 
         return Storage::download($document->file_path, $document->file_name);
     }
+
+    /**
+     * Get enrollments for a specific student
+     */
+    public function getEnrollments(Student $student)
+    {
+        $enrollments = $student->enrollments()->with('course')->get();
+
+        return response()->json($enrollments);
+    }
     
 }

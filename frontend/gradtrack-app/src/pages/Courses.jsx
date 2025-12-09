@@ -54,9 +54,55 @@ export default function Courses() {
     //function to import courses from a json file
     async function importCoursesFromJson(jsonFile) {
         try {
+            // First pass: Create all courses without prerequisites
+            const courseCodeMap = {}; // Maps course_code to the newly created course ID
+            
             for (const course of jsonFile) {
-                await api.post("/courses", course);
+                const courseData = {
+                    course_code: course.course_code,
+                    title: course.title,
+                    credits: course.credits,
+                    level: course.level,
+                };
+                
+                try {
+                    const response = await api.post("/courses", courseData);
+                    courseCodeMap[course.course_code] = response.data.course.id;
+                } catch (error) {
+                    // Course might already exist, try to get its ID
+                    const existingResponse = await api.get("/courses");
+                    const existing = existingResponse.data.find(c => c.course_code === course.course_code);
+                    if (existing) {
+                        courseCodeMap[course.course_code] = existing.id;
+                    }
+                }
             }
+            
+            // Second pass: Add prerequisite groups now that all courses exist
+            for (const course of jsonFile) {
+                if (course.prerequisite_groups && course.prerequisite_groups.length > 0) {
+                    const courseId = courseCodeMap[course.course_code];
+                    
+                    for (const group of course.prerequisite_groups) {
+                        if (group.prerequisites && group.prerequisites.length > 0) {
+                            const prerequisiteIds = group.prerequisites
+                                .map(prereq => courseCodeMap[prereq.course_code])
+                                .filter(id => id !== undefined);
+                            
+                            if (prerequisiteIds.length > 0) {
+                                try {
+                                    await api.post(`/courses/${courseId}/prerequisite-groups`, {
+                                        prerequisite_ids: prerequisiteIds
+                                    });
+                                } catch (error) {
+                                    console.error(`Error adding prerequisite group for ${course.course_code}:`, error);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
             await fetchCourses();
         } catch (error) {
             console.error("Error importing courses:", error);

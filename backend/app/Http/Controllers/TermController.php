@@ -13,25 +13,57 @@ class TermController extends Controller
 {
     public function index(Student $student)
     {
-        $terms = Term::where('student_id', $student->id)
+        $terms = Term::where('student_id', $student->student_id)
             ->with('courses')
             ->orderBy('order')
             ->get();
 
-        return response()->json($terms);
+        // Transform to include full course details
+        $termsWithCourses = $terms->map(function ($term) {
+            return [
+                'id' => $term->id,
+                'student_id' => $term->student_id,
+                'name' => $term->name,
+                'order' => $term->order,
+                'courses' => $term->courses->map(function ($course) {
+                    return [
+                        'id' => $course->id,
+                        'course_code' => $course->course_code,
+                        'title' => $course->title,
+                        'credits' => $course->credits,
+                        'level' => $course->level,
+                    ];
+                })->toArray(),
+                'created_at' => $term->created_at,
+                'updated_at' => $term->updated_at,
+            ];
+        });
+
+        return response()->json($termsWithCourses);
     }
 
     public function store(Request $request, Student $student)
     {
         $request->validate([
-            'name' => 'nullable|string|max:255'
+            'name' => 'required|string|max:255'
         ]);
 
-        $max = Term::where('student_id', $student->id)->max('order') ?? 0;
+        $name = $request->input('name');
+
+        // Check if term with this name already exists for this student
+        $existingTerm = Term::where('student_id', $student->student_id)
+            ->where('name', $name)
+            ->first();
+
+        if ($existingTerm) {
+            return response()->json(['message' => 'A term with this name already exists for this student'], 422);
+        }
+
+        $max = Term::where('student_id', $student->student_id)->max('order') ?? 0;
 
         $term = Term::create([
-            'student_id' => $student->id,
-            'name' => $request->input('name', 'Term ' . ($max + 1)),
+            'student_id' => $student->student_id,
+            'name' => $name,
             'order' => $max + 1,
         ]);
 
@@ -44,7 +76,7 @@ class TermController extends Controller
             'course_id' => 'required|exists:courses,id'
         ]);
 
-        if ($term->student_id !== $student->id) {
+        if ($term->student_id !== $student->student_id) {
             return response()->json(['message' => 'Term does not belong to student'], 403);
         }
 
@@ -57,7 +89,7 @@ class TermController extends Controller
         $course = Course::findOrFail($courseId);
 
         // Gather completed courses for student
-        $completed = Enrollment::where('student_id', $student->id)
+        $completed = Enrollment::where('student_id', $student->student_id)
             ->where(function ($q) {
                 $q->where('status', 'completed')->orWhereNotNull('grade');
             })->pluck('course_id')->toArray();
@@ -65,7 +97,7 @@ class TermController extends Controller
         // Gather planned courses in earlier terms
         $earlierPlanned = DB::table('term_courses')
             ->join('terms', 'term_courses.term_id', '=', 'terms.id')
-            ->where('terms.student_id', $student->id)
+            ->where('terms.student_id', $student->student_id)
             ->where('terms.order', '<', $term->order)
             ->pluck('term_courses.course_id')
             ->toArray();
@@ -119,7 +151,7 @@ class TermController extends Controller
 
     public function removeCourse(Student $student, Term $term, Course $course)
     {
-        if ($term->student_id !== $student->id) {
+        if ($term->student_id !== $student->student_id) {
             return response()->json(['message' => 'Term does not belong to student'], 403);
         }
 

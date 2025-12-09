@@ -13,13 +13,19 @@ class EnrollmentController extends Controller
         return response()->json(Enrollment::all());
     }
 
+    public function studentEnrollments($studentId)
+    {
+        $enrollments = Enrollment::where('student_id', $studentId)->get();
+        return response()->json($enrollments);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'student_id' => 'required|integer|exists:students,id',
+            'student_id' => 'required|integer|exists:students,student_id',
             'course_id' => 'required|integer|exists:courses,id',
             'term' => 'required|string',
-            'status' => 'required|in:enrolled,completed,dropped',
+            'status' => 'required|in:enrolled,completed,dropped,planned,failed',
             'grade' => 'nullable|string',
         ]);
 
