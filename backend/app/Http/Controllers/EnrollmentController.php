@@ -22,10 +22,10 @@ class EnrollmentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'student_id' => 'required|integer|exists:students,id',
+            'student_id' => 'required|integer|exists:students,student_id',
             'course_id' => 'required|integer|exists:courses,id',
             'term' => 'required|string',
-            'status' => 'required|in:enrolled,completed,dropped',
+            'status' => 'required|in:enrolled,completed,dropped,planned,failed',
             'grade' => 'nullable|string',
         ]);
 

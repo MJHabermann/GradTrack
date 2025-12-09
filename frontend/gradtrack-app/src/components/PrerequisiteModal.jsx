@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import '../styles/PrerequisiteModal.css';
 
 const PREREQUISITES = [
-  { code: 'CS1120', title: 'Structured Programming' },
-  { code: 'CS1121', title: 'Algorithms and Data Structures' },
+  { code: 'CS 1120', title: 'Structured Programming' },
+  { code: 'CS 1121', title: 'Algorithms and Data Structures' },
 ];
 
 const DEFICIENCIES = [
-  { code: 'CS1550', title: 'Computer Organization and Architecture' },
-  { code: 'CS2100', title: 'Computer Languages' },
-  { code: 'CS2240', title: 'Computer Operating Systems' },
-  { code: 'CS3383', title: 'Software Engineering' },
-  { code: 'CS3195', title: 'Analysis of Algorithms' },
-  { code: 'CS3185', title: 'Theory of Computation' },
+  { code: 'CS 1550', title: 'Computer Organization and Architecture' },
+  { code: 'CS 2100', title: 'Computer Languages' },
+  { code: 'CS 2240', title: 'Computer Operating Systems' },
+  { code: 'CS 3383', title: 'Software Engineering' },
+  { code: 'CS 3195', title: 'Analysis of Algorithms' },
+  { code: 'CS 3185', title: 'Theory of Computation' },
 ];
 
 export default function PrerequisiteModal({ isOpen, onClose, onSubmit, allCourses }) {
@@ -28,24 +28,26 @@ export default function PrerequisiteModal({ isOpen, onClose, onSubmit, allCourse
   };
 
   const handleSubmit = async () => {
-    const completedCourses = [];
+    const notTakenCourses = [];
     
-    // Collect all checked prerequisite and deficiency courses
+    // Collect all UNCHECKED courses (the ones NOT taken)
     Object.entries(checkedPrereq).forEach(([code, checked]) => {
-      if (checked) {
+      if (!checked) {  // If NOT checked, means they haven't taken it
         const course = allCourses.find(c => c.course_code === code);
-        if (course) completedCourses.push(course);
+        if (course) notTakenCourses.push(course);
       }
     });
 
     Object.entries(checkedDeficiency).forEach(([code, checked]) => {
-      if (checked) {
+      if (!checked) {  // If NOT checked, means they haven't taken it
         const course = allCourses.find(c => c.course_code === code);
-        if (course) completedCourses.push(course);
+        if (course) notTakenCourses.push(course);
       }
     });
 
-    await onSubmit(completedCourses);
+    // Send courses NOT taken to be marked as completed
+    // The unchecked courses are the ones they still need to take
+    await onSubmit(notTakenCourses);
   };
 
   if (!isOpen) return null;
@@ -55,7 +57,7 @@ export default function PrerequisiteModal({ isOpen, onClose, onSubmit, allCourse
       <div className="prerequisite-modal">
         <h2>CS Master's Program Requirements</h2>
         <p className="modal-intro">
-          Welcome! To help us track your progress, please indicate which of the following courses you have already completed.
+          Welcome! To help us track your progress, please indicate which of the following courses you still NEED to take. The rest will be assumed as already completed.
         </p>
 
         <div className="modal-content">
@@ -63,7 +65,7 @@ export default function PrerequisiteModal({ isOpen, onClose, onSubmit, allCourse
           <div className="requirements-section">
             <h3>Required Prerequisites</h3>
             <p className="section-desc">
-              Competence in the following areas must be demonstrated:
+              Please select the courses you have not yet completed:
             </p>
             <div className="courses-list">
               {PREREQUISITES.map(course => (
@@ -84,7 +86,7 @@ export default function PrerequisiteModal({ isOpen, onClose, onSubmit, allCourse
           <div className="requirements-section">
             <h3>Possible Deficiencies</h3>
             <p className="section-desc">
-              If prerequisite requirements are met, students without adequate computer science background may be admitted with deficiencies in:
+              Select all the courses you that are indicated as deficiencies in your admission letter:
             </p>
             <div className="courses-list">
               {DEFICIENCIES.map(course => (
@@ -103,11 +105,8 @@ export default function PrerequisiteModal({ isOpen, onClose, onSubmit, allCourse
         </div>
 
         <div className="modal-actions">
-          <button className="btn btn-secondary" onClick={onClose}>
-            Skip for Now
-          </button>
           <button className="btn btn-primary" onClick={handleSubmit}>
-            Mark as Completed
+            Clear Deficencies
           </button>
         </div>
       </div>

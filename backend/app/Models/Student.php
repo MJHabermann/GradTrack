@@ -85,4 +85,12 @@ class Student extends Model
         return $this->belongsToMany(Course::class, 'student_courses')
                     ->withPivot(['planned_semester', 'status']);
     }
+
+    /**
+     * Get all enrollments for this student
+     */
+    public function enrollments()
+    {
+        return $this->hasMany(Enrollment::class, 'student_id', 'student_id');
+    }
 }

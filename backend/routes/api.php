@@ -25,7 +25,12 @@ use App\Http\Controllers\ReminderController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
-Route::get('/me', [AuthController::class, 'me']);
+
+// Protected routes (require authentication)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/student-id', [AuthController::class, 'studentId']);
+});
 
 
 // User management routes
@@ -71,6 +76,9 @@ Route::delete('/courses/{course}/prerequisite-groups/{group_id}', [CourseControl
 
 Route::apiResource('/courses', CourseController::class);
 Route::apiResource('/enrollments', EnrollmentController::class);
+
+// Student enrollments and terms routes
+Route::get('/students/{student}/enrollments', [StudentController::class, 'getEnrollments']);
 
 // Scheduler / terms
 Route::get('/students/{student}/schedule', [TermController::class, 'index']);
