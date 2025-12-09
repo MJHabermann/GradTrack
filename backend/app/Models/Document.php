@@ -18,6 +18,8 @@ class Document extends Model
         'tag',
         'is_required',
         'required_document_type',
+        'status',
+        'review_comment',
     ];
 
     // Relationship to User

@@ -34,8 +34,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 // User management routes
-Route::apiResource('users', UserController::class);
+// Exclude update from apiResource so we can add authentication middleware
+Route::apiResource('users', UserController::class)->except(['update']);
 Route::get('/users/role/{role}', [UserController::class, 'getByRole']);
+
+// Protected user update route - requires authentication
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::patch('/users/{id}', [UserController::class, 'update']);
+});
 
 // Student management routes
 Route::apiResource('students', StudentController::class);
@@ -96,9 +103,15 @@ Route::get('/notifications', [NotificationController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () { // Only authenticated users can access these routes
     Route::get('/documents', [DocumentController::class, 'index']); // Get all documents for the authenticated user
     Route::post('/documents/upload', [DocumentController::class, 'upload']); // Upload a new document
+    
+    // Admin/Faculty routes for document review - must come before /documents/{id} route
+    Route::get('/documents/all', [DocumentController::class, 'getAllDocuments']); // Get all documents (admin/faculty only)
+    
     Route::get('/documents/{id}', [DocumentController::class, 'show']); // Get a single document's metadata
     Route::get('/documents/{id}/download', [DocumentController::class, 'download']); // Download a document
     Route::delete('/documents/{id}', [DocumentController::class, 'destroy']); // Delete a document
+    Route::patch('/documents/{id}/status', [DocumentController::class, 'updateStatus']); // Update document status (admin/faculty only)
+    Route::put('/documents/{id}/status', [DocumentController::class, 'updateStatus']); // Update document status (admin/faculty only)
 });
 
 // Student Reminders routes
@@ -107,6 +120,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/reminders', [ReminderController::class, 'store']);
     Route::patch('/reminders/{id}', [ReminderController::class, 'update']);
     Route::delete('/reminders/{id}', [ReminderController::class, 'destroy']);
+    
+    // Faculty/Admin route to send reminders to students
+    Route::post('/students/{studentId}/reminders', [ReminderController::class, 'sendToStudent']);
 });
 
 // Deadline routes

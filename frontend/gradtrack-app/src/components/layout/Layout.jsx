@@ -15,8 +15,9 @@ return (
       style={{
         marginLeft: sidebarOpen ? '220px' : '60px',
         marginTop: '72px',
-        width: `calc(100% - ${sidebarOpen ? '220px' : '60px'})`,
+        flex: 1,
         transition: 'margin-left 0.3s ease',
+        overflow: 'hidden',
       }}
     >
       {children}

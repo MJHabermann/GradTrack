@@ -343,201 +343,128 @@ export default function CoursePlanner() {
         }
     }
 
-    async function handlePrereqModalSubmit(notTakenCourses) {
-        if (!studentId) {
-            alert('Student ID not loaded. Please refresh the page.');
-            return;
-        }
-        try {
-            // Get all prerequisite and deficiency courses
-            const PREREQUISITES = [
-              { code: 'CS 1120' },
-              { code: 'CS 1121' },
-            ];
-            const DEFICIENCIES = [
-              { code: 'CS 1550' },
-              { code: 'CS 2100' },
-              { code: 'CS 2240' },
-              { code: 'CS 3383' },
-              { code: 'CS 3195' },
-              { code: 'CS 3185' },
-            ];
-            
-            const allProgramCourses = [...PREREQUISITES, ...DEFICIENCIES];
-            const notTakenCodes = notTakenCourses.map(c => c.course_code);
-            
-            // Create enrollments for ALL courses EXCEPT the ones they haven't taken
-            // This means we create enrollments for the ones they HAVE taken
-            for (let course of courses) {
-              // Only create if this is a program requirement course AND they haven't checked it
-              const isProgramCourse = allProgramCourses.some(p => p.code === course.course_code);
-              const isNotTaken = notTakenCodes.includes(course.course_code);
-              
-              if (isProgramCourse && !isNotTaken) {
-                // This course is completed (they didn't check it as not taken)
-                console.log(`Creating enrollment for course ${course.id} (${course.course_code}) with student_id ${studentId}`);
-                try {
-                  await api.post('/enrollments', {
-                    student_id: studentId,
-                    course_id: course.id,
-                    term: 'Transfer/Prior',
-                    status: 'completed',
-                  });
-                } catch (err) {
-                  console.error('Failed to create enrollment for', course.course_code, err);
-                }
-              }
-            }
-            
-            setShowPrereqModal(false);
-            setHasCompletedCourses(true);
-            // Mark prerequisite modal as completed for this student
-            localStorage.setItem(`prereq_modal_completed_${studentId}`, 'true');
-            alert('Prerequisites marked as completed!');
-        } catch (err) {
-            console.error('Failed to mark prerequisites as completed', err);
-            console.error('Error response:', err.response?.data);
-            console.error('Error status:', err.response?.status);
-            alert('Failed to save prerequisites. Please try again.');
-        }
-    }
+return (
+  <>
+    <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+    <Navbar sidebarOpen={sidebarOpen} />
+    <main style={{ paddingLeft: sidebarOpen ? '20rem' : '5rem' }}>
+    <div className="course-planner-page">
+      <div className="planner-header">
+        <h2>Course Planner</h2>
+        <p className="planner-subtitle">Organize courses into terms and visualize your academic path</p>
+      </div>
 
-    function handleClosePrereqModal() {
-        // Mark prerequisite modal as completed for this student even if skipped
-        localStorage.setItem(`prereq_modal_completed_${studentId}`, 'true');
-        setShowPrereqModal(false);
-    }
+      <div className="planner-grid">
+        <div className="planner-left">
 
-    return (
-        <>
-            <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-            <Navbar />
-            <PrerequisiteModal 
-                isOpen={showPrereqModal} 
-                onClose={handleClosePrereqModal}
-                onSubmit={handlePrereqModalSubmit}
-                allCourses={courses}
+          {/* Search Courses */}
+          <section className="search-section card">
+            <h3>Search Courses</h3>
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Search by code or title"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
             />
-            <div className="course-planner-page">
-                <div className="planner-header">
-                    <h2>Course Planner</h2>
-                </div>
 
-                <div className="planner-grid">
-                    <div className="planner-left">
-                        <div className="search-planned-row">
-                        <section className="search-section card">
-                            <h3>Search Courses</h3>
-                            <input
-                                className="search-input"
-                                type="text"
-                                placeholder="Search by code or title"
-                                value={search}
-                                onChange={e => setSearch(e.target.value)}
-                            />
-                            <style>{!search ? '.search-results{display:none}' : '.search-results{max-height:240px;overflow-y:auto;}'}</style>
+            {!search && (
+              <div className="placeholder">Type to search courses to see results</div>
+            )}
+            {search && filtered.length === 0 && (
+              <div className="no-results">No courses found for "{search}"</div>
+            )}
 
-                            {!search && (
-                                <div className="no-search-placeholder">Type to search courses to see results</div>
-                            )}
-
-                            {search && filtered.length === 0 && (
-                                <div className="no-results">No courses found for "{search}"</div>
-                            )}
-                            <div className="search-results">
-                                {filtered.map(c => (
-                                    <div key={c.id} className="course-item">
-                                        <div className="course-meta">
-                                            <strong>{c.course_code}</strong>
-                                            <div className="course-title">{c.title}</div>
-                                        </div>
-                                        <div className="course-actions">
-                                            <button className="btn btn-sm" onClick={() => handleAddPlanned(c)}>Add</button>
-                                            <div className="drag-handle" draggable onDragStart={e => onDragStart(e, c, 'search')}>☰</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-
-                        <section className="planned-section card" onDragOver={allowDrop} onDrop={onDropToPlanned}>
-                            <h3>Planned (visual only)</h3>
-                            <div className="planned-area">
-                                {planned.length === 0 && <div className="placeholder">Drag courses here or click Add</div>}
-                                {planned.map(c => (
-                                    <div key={c.id} className="planned-item" draggable onDragStart={e => onDragStart(e, c, 'planned')}>
-                                        <div className="planned-meta">{c.course_code} — {c.title}</div>
-                                        <div className="planned-actions">
-                                            <button className="btn btn-sm" onClick={() => handleRemovePlanned(c.id)}>Remove</button>
-                                            <div className="drag-handle">☰</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-                        </div>
-
-                        <section className="term-controls card">
-                            <h3>Create Term</h3>
-                            <TermCreator onAdd={handleAddTerm} />
-                            <div className="save-actions">
-                                <button className="btn btn-primary" onClick={handleSave}>Save Schedule</button>
-                            </div>
-                        </section>
-                        <section className="terms-row-container card">
-                            <h3>Terms</h3>
-                            <div
-                                className="terms-row"
-                                ref={termsRowRef}
-                                onMouseDown={onTermsMouseDown}
-                                onMouseMove={onTermsMouseMove}
-                                onMouseUp={onTermsMouseUp}
-                                onMouseLeave={onTermsMouseUp}
-                                onTouchStart={onTermsTouchStart}
-                                onTouchMove={onTermsTouchMove}
-                                onTouchEnd={onTermsTouchEnd}
-                            >
-                                {terms.length === 0 && <div className="placeholder">No terms yet. Add one on the right.</div>}
-                                {terms.map(t => (
-                                    <div key={t.id} className="term-card" onDragOver={allowDrop} onDrop={e => onDropToTerm(e, t.id)}>
-                                        <div className="term-header"><strong>{t.season} {t.year}</strong></div>
-                                        <div className="term-courses">
-                                            {t.courses.length === 0 && <div className="placeholder">Drop planned courses here</div>}
-                                            {t.courses.map(c => (
-                                                <div key={c.id} className="term-course" draggable onDragStart={e => onDragStart(e, c, t.id)}>
-                                                    <div>{c.course_code} — {c.title}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-
-                        <section className="completed-prerequisites-section card">
-                            <h3>Prerequisites Completed</h3>
-                            <div className="completed-prerequisites-area">
-                                {completedPrerequisites.length === 0 && <div className="placeholder">No prerequisites marked as completed yet</div>}
-                                {completedPrerequisites.map(c => (
-                                    <div key={c.id} className="completed-course-item">
-                                        <div className="course-badge">✓</div>
-                                        <div className="completed-course-meta">
-                                            <strong>{c.course_code}</strong>
-                                            <div className="course-title">{c.title}</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-                        
-
+            {search && filtered.length > 0 && (
+              <div className="search-results">
+                {filtered.map(c => (
+                  <div key={c.id} className="course-item">
+                    <div className="course-meta">
+                      <strong>{c.course_code}</strong>
+                      <div className="course-title">{c.title}</div>
                     </div>
-                    
+                    <div className="course-actions">
+                      <button className="btn btn-sm btn-outline" onClick={() => handleAddPlanned(c)}>Add</button>
+                      <div className="drag-handle" draggable onDragStart={e => onDragStart(e, c, 'search')}>☰</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+
+          {/* Planned Courses */}
+            <section className="planned-section card" onDragOver={allowDrop} onDrop={onDropToPlanned}>
+            <h3>Planned Courses</h3>
+
+            {planned.length === 0 && (
+                <div className="no-search-placeholder">
+                Drag Courses Here or Click Add
                 </div>
+            )}
+
+            <div className="planned-area">
+                {planned.map(c => (
+                <div key={c.id} className="planned-item" draggable onDragStart={e => onDragStart(e, c, 'planned')}>
+                    <div className="planned-meta">{c.course_code} — {c.title}</div>
+                    <div className="planned-actions">
+                    <button className="btn btn-sm btn-outline" onClick={() => handleRemovePlanned(c.id)}>Remove</button>
+                    <div className="drag-handle">☰</div>
+                    </div>
+                </div>
+                ))}
             </div>
-        </>
-    );
+            </section>
+
+
+          {/* Term Controls */}
+          <section className="term-controls card">
+            <h3>Create Term</h3>
+            <TermCreator onAdd={handleAddTerm} />
+            <div className="save-actions">
+              <button className="btn btn-primary" onClick={handleSave}>Save Schedule</button>
+            </div>
+          </section>
+
+          {/* Terms Row */}
+          <section className="terms-row-container card">
+            <h3>Terms</h3>
+            <div
+              className="terms-row"
+              ref={termsRowRef}
+              onMouseDown={onTermsMouseDown}
+              onMouseMove={onTermsMouseMove}
+              onMouseUp={onTermsMouseUp}
+              onMouseLeave={onTermsMouseUp}
+              onTouchStart={onTermsTouchStart}
+              onTouchMove={onTermsTouchMove}
+              onTouchEnd={onTermsTouchEnd}
+            >
+              {terms.length === 0 && <div className="placeholder">No terms yet. Add one above.</div>}
+              {terms.map(t => (
+                <div key={t.id} className="term-card" onDragOver={allowDrop} onDrop={e => onDropToTerm(e, t.id)}>
+                  <div className="term-header"><strong>{t.season} {t.year}</strong></div>
+                  <div className="term-courses">
+                    {t.courses.length === 0 && <div className="placeholder">Drop planned courses here</div>}
+                    {t.courses.map(c => (
+                      <div key={c.id} className="term-course" draggable onDragStart={e => onDragStart(e, c, t.id)}>
+                        <div>{c.course_code} — {c.title}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+        </div>
+        </div>
+        </div>
+    </main>
+    </>
+);
 }
+
 
 function TermCreator({ onAdd }) {
     const [season, setSeason] = useState('Fall');

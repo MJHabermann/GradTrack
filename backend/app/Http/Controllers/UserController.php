@@ -115,6 +115,20 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $user = User::findOrFail($id);
+        $authenticatedUser = Auth::user();
+
+        // Security check: Users can only update their own profile, unless they're an admin
+        if (!$authenticatedUser) {
+            return response()->json([
+                'message' => 'Unauthorized. You must be logged in to update a profile.'
+            ], 401);
+        }
+
+        if (!$authenticatedUser->isAdmin() && $authenticatedUser->id != $user->id) {
+            return response()->json([
+                'message' => 'Unauthorized. You can only update your own profile.'
+            ], 403);
+        }
 
         $request->validate([
             'first_name' => 'sometimes|required|string|max:255',
@@ -125,7 +139,19 @@ class UserController extends Controller
             'department' => 'nullable|string|max:255',
         ]);
 
-        $updateData = $request->only(['first_name', 'last_name', 'email', 'role', 'department']);
+        // Non-admin users cannot change their role
+        if (!$authenticatedUser->isAdmin() && $request->has('role')) {
+            return response()->json([
+                'message' => 'Unauthorized. You cannot change your role.'
+            ], 403);
+        }
+
+        $updateData = $request->only(['first_name', 'last_name', 'email', 'department']);
+        
+        // Only allow role update for admins
+        if ($authenticatedUser->isAdmin() && $request->has('role')) {
+            $updateData['role'] = $request->role;
+        }
         
         if ($request->has('password')) {
             $updateData['password'] = Hash::make($request->password);

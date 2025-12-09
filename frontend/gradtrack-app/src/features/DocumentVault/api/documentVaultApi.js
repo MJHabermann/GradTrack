@@ -112,6 +112,39 @@ const documentVaultApi = {
   getFileExtension(filename) {
     return filename.split('.').pop().toLowerCase();
   },
+
+  // Get all documents for admin/faculty review
+  async getAllDocumentsForReview() {
+    try {
+      const response = await API_CONFIG.request('/api/documents/all', {
+        method: 'GET',
+      });
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching all documents for review:', error);
+      throw error;
+    }
+  },
+
+  // Update document status (approve/decline)
+  async updateDocumentStatus(id, status, reviewComment = null) {
+    try {
+      const body = { status };
+      if (reviewComment) {
+        body.review_comment = reviewComment;
+      }
+
+      const response = await API_CONFIG.request(`/api/documents/${id}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+      });
+      
+      return response.json();
+    } catch (error) {
+      console.error('Error updating document status:', error);
+      throw error;
+    }
+  },
 };
 
 export default documentVaultApi;
