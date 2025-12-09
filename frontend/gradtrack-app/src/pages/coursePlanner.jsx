@@ -160,7 +160,8 @@ export default function CoursePlanner() {
 return (
   <>
     <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-    <Navbar />
+    <Navbar sidebarOpen={sidebarOpen} />
+    <main style={{ paddingLeft: sidebarOpen ? '20rem' : '5rem' }}>
     <div className="course-planner-page">
       <div className="planner-header">
         <h2>Course Planner</h2>
@@ -271,9 +272,10 @@ return (
           </section>
 
         </div>
-      </div>
-    </div>
-  </>
+        </div>
+        </div>
+    </main>
+    </>
 );
 }
 
