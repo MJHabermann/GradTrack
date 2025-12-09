@@ -29,24 +29,22 @@ export default function PrerequisiteModal({ isOpen, onClose, onSubmit, allCourse
 
   const handleSubmit = async () => {
     const notTakenCourses = [];
-    
-    // Collect all UNCHECKED courses (the ones NOT taken)
+
     Object.entries(checkedPrereq).forEach(([code, checked]) => {
-      if (!checked) {  // If NOT checked, means they haven't taken it
+      if (!checked) { 
         const course = allCourses.find(c => c.course_code === code);
         if (course) notTakenCourses.push(course);
       }
     });
 
     Object.entries(checkedDeficiency).forEach(([code, checked]) => {
-      if (!checked) {  // If NOT checked, means they haven't taken it
+      if (!checked) {
         const course = allCourses.find(c => c.course_code === code);
         if (course) notTakenCourses.push(course);
       }
     });
 
-    // Send courses NOT taken to be marked as completed
-    // The unchecked courses are the ones they still need to take
+
     await onSubmit(notTakenCourses);
   };
 
