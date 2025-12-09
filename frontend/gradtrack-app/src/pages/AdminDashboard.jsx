@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
+import CalendarWidget from '../components/widgets/CalendarWidget';
 import DocumentReview from '../components/widgets/AdminDocumentReviewWidget';
 import API_CONFIG from '../api/config';
 import { UserContext } from '../context/UserContext';
@@ -33,44 +34,44 @@ const AdminDashboard = () => {
       }
     };
 
-    if (!userLoading) {
+    if (!userLoading && user && user.role === 'admin') {
       fetchStudents();
     }
-  }, [userLoading]);
+  }, [userLoading, user]);
 
   const handleStudentClick = (studentId) => {
     navigate(`/student-details/${studentId}`);
   };
 
+  useEffect(() => {
+    // Redirect non-admin users
+    if (!userLoading && user && user.role !== 'admin') {
+      navigate('/dashboard');
+    }
+  }, [user, userLoading, navigate]);
+
   if (userLoading || loading) return <Layout><div className="loading-message">Loading...</div></Layout>;
   if (error) return <Layout><div className="error-message">{error}</div></Layout>;
   if (!user) return <Layout><div className="error-message">Please log in to access the admin dashboard.</div></Layout>;
+  if (user.role !== 'admin') return <Layout><div className="error-message">Access denied. Admin privileges required.</div></Layout>;
 
   return (
     <Layout>
       <div className="admin-dashboard-container">
-        <div className="admin-header">
-          <h1>Welcome, {user.first_name} {user.last_name}</h1>
-          <p>System Administrator</p>
+        <div className="admin-top-section">
+          <div className="admin-header">
+            <h1>Welcome, {user.first_name} {user.last_name}</h1>
+            <p>System Administrator</p>
+          </div>
+
+          <div className="calendar-container">
+            <CalendarWidget />
+          </div>
         </div>
 
         <section className="admin-section">
-          <h2 className="admin-section-title">Compliance Snapshot</h2>
-          <div className="admin-stats-grid">
-            <div className="admin-stat-card">
-              <h3>0</h3>
-              <p>Pending Documents</p>
-              <DocumentReview />
-            </div>
-            <div className="admin-stat-card">
-              <h3>0</h3>
-              <p>Flagged Students</p>
-            </div>
-            <div className="admin-stat-card">
-              <h3>{students.length}</h3>
-              <p>Total Students</p>
-            </div>
-          </div>
+          <h2 className="admin-section-title">Document Review</h2>
+          <DocumentReview />
         </section>
 
         <section className="admin-section">

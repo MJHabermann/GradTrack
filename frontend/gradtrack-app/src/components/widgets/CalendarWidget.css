@@ -62,6 +62,255 @@
   background-color: #f6f1d6;
 }
 
+/* Reminder indicators */
+.reminder-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.reminder-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.reminder-dot.priority-high {
+  background-color: #b30000;
+}
+
+.reminder-dot.priority-medium {
+  background-color: #ffa500;
+}
+
+.reminder-dot.priority-low {
+  background-color: #4a90e2;
+}
+
+.selected-date-info {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f0eac2;
+}
+
+.selected-date-info p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #2c2c2c;
+}
+
+.date-reminders {
+  margin-top: 0.75rem;
+}
+
+.date-reminders strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #2c2c2c;
+}
+
+.reminder-list-mini {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reminder-list-mini li {
+  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+  border-radius: 6px;
+  background-color: #f6f1d6;
+  font-size: 0.85rem;
+  color: #2c2c2c;
+}
+
+.reminder-list-mini li.priority-high {
+  border-left: 3px solid #b30000;
+}
+
+.reminder-list-mini li.priority-medium {
+  border-left: 3px solid #ffa500;
+}
+
+.reminder-list-mini li.priority-low {
+  border-left: 3px solid #4a90e2;
+}
+
+.reminder-sender {
+  font-size: 0.75rem;
+  color: #666;
+  font-style: italic;
+  margin-left: 0.5rem;
+}
+
+/* Reminder Modal Styles */
+.reminder-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 1rem;
+}
+
+.reminder-modal-content {
+  background-color: #fffef8;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.reminder-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f0eac2;
+  background-color: #f6f1d6;
+}
+
+.reminder-modal-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+
+.reminder-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.reminder-modal-close:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.reminder-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.reminder-modal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reminder-modal-item {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background-color: #f6f1d6;
+  border-left: 4px solid #ccc;
+}
+
+.reminder-modal-item.priority-high {
+  border-left-color: #b30000;
+  background-color: #ffe6e6;
+}
+
+.reminder-modal-item.priority-medium {
+  border-left-color: #ffa500;
+  background-color: #fff4e6;
+}
+
+.reminder-modal-item.priority-low {
+  border-left-color: #4a90e2;
+  background-color: #e6f2ff;
+}
+
+.reminder-modal-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.reminder-priority-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.reminder-priority-badge.priority-high {
+  background-color: #b30000;
+  color: white;
+}
+
+.reminder-priority-badge.priority-medium {
+  background-color: #ffa500;
+  color: white;
+}
+
+.reminder-priority-badge.priority-low {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.reminder-sender-badge {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+
+.reminder-modal-item-text {
+  color: #2c2c2c;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.reminder-modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #f0eac2;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reminder-modal-close-btn {
+  padding: 0.5rem 1.5rem;
+  background-color: #f0eac2;
+  color: #2c2c2c;
+  border: 1px solid #d4c9a0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.reminder-modal-close-btn:hover {
+  background-color: #e0d4a0;
+}
+
 /* 🌙 Dark mode overrides */
 @media (prefers-color-scheme: dark) {
   .calendar-widget {

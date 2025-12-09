@@ -196,6 +196,52 @@
   font-size: 0.8rem;
 }
 
+.file-status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.file-status-badge.approved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.file-status-badge.declined {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.file-status-badge.pending-review {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.file-review-comment {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background-color: #f8f9fa;
+  border-left: 3px solid #e74c3c;
+  border-radius: 4px;
+}
+
+.file-review-comment strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #721c24;
+  font-size: 0.85rem;
+}
+
+.file-review-comment .comment-text {
+  margin: 0.25rem 0 0 0;
+  color: #555;
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
 .file-actions {
   display: flex;
   gap: 0.5rem;
@@ -264,8 +310,24 @@
 }
 
 .required-doc-item.pending {
-  border-color: #dc3545;
-  background-color: #fff8f8;
+  border-color: #ff5252;
+  background-color: #ffebee;
+}
+
+/* Status-based styling for required documents */
+.required-doc-item[data-status="Approved"] {
+  border-color: #28a745;
+  background-color: #f8fff9;
+}
+
+.required-doc-item[data-status="Declined"] {
+  border-color: #c62828;
+  background-color: #ffcdd2;
+}
+
+.required-doc-item[data-status="Pending Review"] {
+  border-color: #ffc107;
+  background-color: #fffbf0;
 }
 
 .doc-header {
@@ -280,6 +342,12 @@
   color: #2c2c2c;
 }
 
+.doc-status-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .doc-status {
   font-size: 0.9rem;
   font-weight: 500;
@@ -291,6 +359,35 @@
 
 .doc-status.pending {
   color: #dc3545;
+}
+
+.doc-status.missing {
+  color: #ff5252;
+  font-weight: 600;
+}
+
+.doc-status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.doc-status-badge.approved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.doc-status-badge.declined {
+  background-color: #ffcdd2;
+  color: #c62828;
+  border: 1px solid #c62828;
+}
+
+.doc-status-badge.pending-review {
+  background-color: #fff3cd;
+  color: #856404;
 }
 
 .doc-details {
@@ -309,6 +406,48 @@
 .doc-description {
   font-size: 0.85rem;
   color: #6c757d;
+}
+
+.uploaded-file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.uploaded-file-name-small {
+  font-size: 0.85rem;
+  color: #495057;
+  font-weight: 500;
+}
+
+.uploaded-file-date {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.required-doc-review-comment {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.required-doc-review-comment strong {
+  display: inline;
+  color: #6c757d;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.required-doc-review-comment .comment-text {
+  display: inline;
+  margin: 0;
+  color: #495057;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
 .doc-actions {

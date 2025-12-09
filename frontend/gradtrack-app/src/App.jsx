@@ -19,7 +19,7 @@ function App() {
         <UserProvider>
         <BrowserRouter>
             <div className="flex-col">
-            <nav style={{ padding: "1rem", display: "flex", gap: "1rem", width: "100vw" }}>
+            <nav style={{ padding: "1rem", display: "flex", gap: "1rem", width: "100%" }}>
                 <Link to="/signin">Sign In</Link>
                 <Link to="/signup">Sign Up</Link>
             </nav>
@@ -39,8 +39,8 @@ function App() {
                         <Route path="/reminders" element={<RemindersPage />} />
                         <Route path="/student-details/:studentId" element={<StudentDetails />} />
                         <Route path="/course-planner" element={<CoursePlanner />} />
-                        {/* <Route path="/profile" element={<UserProfile />} />
-                        <Route path="/admin" element={<AdminPanel />} /> */}
+                        {/* <Route path="/profile" element={<UserProfile />} />*/}
+
                     </Routes>
                 </main>
             </div>

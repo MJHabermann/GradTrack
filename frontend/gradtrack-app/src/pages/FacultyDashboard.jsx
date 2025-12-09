@@ -4,6 +4,7 @@ import Layout from '../components/layout/Layout';
 import './FacultyDashboard.css';
 import DocumentVault from '../components/widgets/DocumentVaultWidget';
 import CalendarWidget from '../components/widgets/CalendarWidget';
+import DocumentReview from '../components/widgets/AdminDocumentReviewWidget';
 import {UserContext} from '../context/UserContext';
 import API_CONFIG from '../api/config';
 
@@ -68,8 +69,7 @@ const FacultyDashboard = () => {
           <div className="to-do-grid">
             <div className="alert-item">
               <h3>Alerts</h3>
-              <p>3 documents pending review</p>
-              <p>1 student missing forms</p>
+              <DocumentReview />
             </div>
             <div className="upcoming-item">
               <h3>Upcoming</h3>
