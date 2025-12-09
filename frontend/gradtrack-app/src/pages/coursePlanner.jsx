@@ -9,15 +9,10 @@ const api = axios.create({
     baseURL: "http://127.0.0.1:8000/api",
 });
 
-// Add auth token to all requests
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('auth_token');
-    console.log('Token from localStorage:', token ? token.substring(0, 20) + '...' : 'NOT FOUND');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
-        console.log('Authorization header set:', config.headers.Authorization.substring(0, 30) + '...');
-    } else {
-        console.warn('No auth token found in localStorage!');
     }
     return config;
 });
@@ -29,73 +24,53 @@ export default function CoursePlanner() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [terms, setTerms] = useState([]); 
     const [nextTermId, setNextTermId] = useState(1);
-    const [removedCourses, setRemovedCourses] = useState([]);  // Track removed courses for deletion
+    const [removedCourses, setRemovedCourses] = useState([]);
     const termsRowRef = useRef(null);
     const isDownRef = useRef(false);
     const startXRef = useRef(0);
     const scrollLeftRef = useRef(0);
-    const [, setIsDragging] = useState(false);
     const [showPrereqModal, setShowPrereqModal] = useState(false);
-    const [hasCompletedCourses, setHasCompletedCourses] = useState(false);
     const [studentId, setStudentId] = useState(null);
     const [completedPrerequisites, setCompletedPrerequisites] = useState([]);
 
-    // Fetch courses and student ID on mount
     useEffect(() => {
-        // Load courses
         api
             .get('/courses')
             .then(res => setCourses(res.data || []))
             .catch(err => console.error('Failed to load courses', err));
         
-        // Fetch authenticated user and extract student ID from student table
         api 
             .get('/me')
             .then(res => {
-                console.log('ME response:', res.data);
                 const student = res.data.user?.student;
                 if (student && student.student_id) {
-                    console.log('Setting studentId from student table:', student.student_id);
                     setStudentId(student.student_id);
                 } else {
-                    console.error('No student record found for authenticated user', res.data);
+                    console.error('No student record found for authenticated user');
                 }
             })
-            .catch(err => {
-                console.error('Failed to load user info');
-                console.error('Status:', err.response?.status);
-                console.error('Data:', err.response?.data);
-                console.error('Headers sent:', err.config?.headers);
-                console.error('Full error:', err);
-            });
+            .catch(err => console.error('Failed to load user info', err));
     }, []);
 
-    // Load saved terms from backend after studentId is set
     useEffect(() => {
         if (!studentId) return;
         
-        console.log('Fetching saved terms for student ID:', studentId);
         api
             .get(`/students/${studentId}/schedule`)
             .then(res => {
               const savedTerms = res.data || [];
-              console.log('Loaded terms from backend:', savedTerms);
-              console.log('First term courses:', savedTerms[0]?.courses);
               
-              // Transform backend terms to frontend format
-              const transformedTerms = savedTerms.map((term, index) => {
-                console.log(`Transforming term ${term.id}:`, term);
+              const transformedTerms = savedTerms.map((term) => {
                 return {
                   id: term.id,
                   season: term.name?.split(' ')[0] || 'Fall',
                   year: parseInt(term.name?.split(' ')[1]) || new Date().getFullYear(),
                   courses: term.courses || [],
                   isNew: false,
-                  savedCourseIds: (term.courses || []).map(c => c.id) // Track which courses are from DB
+                  savedCourseIds: (term.courses || []).map(c => c.id)
                 };
               });
               
-              console.log('Transformed terms:', transformedTerms);
               setTerms(transformedTerms);
               if (transformedTerms.length > 0) {
                 setNextTermId(Math.max(...transformedTerms.map(t => t.id)) + 1);
@@ -103,33 +78,24 @@ export default function CoursePlanner() {
             })
             .catch(err => console.error('Failed to load terms', err));
         
-        // Check if prerequisite modal has already been completed for this student
         const prereqCompleted = localStorage.getItem(`prereq_modal_completed_${studentId}`);
         if (prereqCompleted) {
-            console.log('Prerequisite modal already completed for this student');
             setShowPrereqModal(false);
         }
         
-        // Check if student has any completed courses
-        console.log('Fetching enrollments for student ID:', studentId);
         api
             .get(`/students/${studentId}/enrollments`)
             .then(res => {
               const enrollments = res.data || [];
               const hasCompleted = enrollments.some(e => e.status === 'completed');
-              console.log('Has completed courses:', hasCompleted);
-              setHasCompletedCourses(hasCompleted);
               
-              // Extract completed prerequisites with course details
               const completed = enrollments
                 .filter(e => e.status === 'completed')
                 .map(e => e.course)
                 .filter(Boolean);
-              console.log('Completed prerequisites:', completed);
               setCompletedPrerequisites(completed);
               
               if (!hasCompleted && !prereqCompleted) {
-                console.log('Showing prerequisite modal');
                 setShowPrereqModal(true);
               }
             })
@@ -156,7 +122,6 @@ export default function CoursePlanner() {
     function handleAddTerm(season, year) {
         const termName = `${season} ${year}`;
         
-        // Check if term with this name already exists
         if (terms.find(t => `${t.season} ${t.year}` === termName)) {
             alert(`A term named "${termName}" already exists. Please choose a different season or year.`);
             return;
@@ -181,7 +146,6 @@ export default function CoursePlanner() {
             return cleaned.map(t => t.id === termId ? { ...t, courses: [...t.courses, course] } : t);
         });
         
-        // If course was removed from another term, track it for deletion
         if (source !== 'planned' && source !== 'search') {
             setRemovedCourses(prev => [...prev, { termId: source, courseId: course.id }]);
         }
@@ -200,8 +164,7 @@ export default function CoursePlanner() {
         if (source !== 'planned') {
             setTerms(prev => prev.map(t => ({ ...t, courses: t.courses.filter(c => c.id !== course.id) })));
             setPlanned(prev => prev.find(p => p.id === course.id) ? prev : [...prev, course]);
-            
-            // Track removal from term
+
             if (source !== 'search') {
                 setRemovedCourses(prev => [...prev, { termId: source, courseId: course.id }]);
             }
@@ -213,7 +176,6 @@ export default function CoursePlanner() {
         const el = termsRowRef.current;
         if (!el) return;
         isDownRef.current = true;
-        setIsDragging(true);
         el.classList.add('dragging');
         startXRef.current = e.pageX - el.offsetLeft;
         scrollLeftRef.current = el.scrollLeft;
@@ -231,7 +193,6 @@ export default function CoursePlanner() {
     function onTermsMouseUp() {
         const el = termsRowRef.current;
         isDownRef.current = false;
-        setIsDragging(false);
         if (el) el.classList.remove('dragging');
     }
 
@@ -264,9 +225,7 @@ export default function CoursePlanner() {
             alert('No terms to save');
             return;
         }
-
         try {
-            // First, delete any removed courses
             for (let removed of removedCourses) {
                 try {
                     await api.delete(`/students/${studentId}/terms/${removed.termId}/courses/${removed.courseId}`);
@@ -276,12 +235,10 @@ export default function CoursePlanner() {
             }
             setRemovedCourses([]);
 
-            // Then add/create new terms and courses
             for (let t of terms) {
                 const name = `${t.season} ${t.year}`;
                 let termId = t.id;
-                
-                // Only create the term if it's marked as new
+
                 if (t.isNew) {
                     try {
                         const termRes = await api.post(`/students/${studentId}/terms`, { name });
@@ -294,11 +251,8 @@ export default function CoursePlanner() {
                         throw err;
                     }
                 }
-                
-                // Add courses to the term (only if they weren't already saved)
                 const savedCourseIds = t.savedCourseIds || [];
                 for (let c of t.courses) {
-                    // Skip if this course is already in the database for this term
                     if (savedCourseIds.includes(c.id)) {
                         continue;
                     }
@@ -321,8 +275,6 @@ export default function CoursePlanner() {
                     }
                 }
             }
-
-            // Reload terms from backend after save
             const reloadRes = await api.get(`/students/${studentId}/schedule`);
             const savedTerms = reloadRes.data || [];
             const transformedTerms = savedTerms.map((term, index) => ({
@@ -334,7 +286,7 @@ export default function CoursePlanner() {
               savedCourseIds: (term.courses || []).map(c => c.id)
             }));
             setTerms(transformedTerms);
-            setPlanned([]); // Clear planned section after save
+            setPlanned([]);
 
             alert('Schedule saved successfully');
         } catch (err) {
@@ -349,7 +301,7 @@ export default function CoursePlanner() {
             return;
         }
         try {
-            // Get all prerequisite and deficiency courses
+            //prerequisite and deficiency course codes
             const PREREQUISITES = [
               { code: 'CS 1120' },
               { code: 'CS 1121' },
@@ -365,17 +317,11 @@ export default function CoursePlanner() {
             
             const allProgramCourses = [...PREREQUISITES, ...DEFICIENCIES];
             const notTakenCodes = notTakenCourses.map(c => c.course_code);
-            
-            // Create enrollments for ALL courses EXCEPT the ones they haven't taken
-            // This means we create enrollments for the ones they HAVE taken
             for (let course of courses) {
-              // Only create if this is a program requirement course AND they haven't checked it
               const isProgramCourse = allProgramCourses.some(p => p.code === course.course_code);
               const isNotTaken = notTakenCodes.includes(course.course_code);
               
               if (isProgramCourse && !isNotTaken) {
-                // This course is completed (they didn't check it as not taken)
-                console.log(`Creating enrollment for course ${course.id} (${course.course_code}) with student_id ${studentId}`);
                 try {
                   await api.post('/enrollments', {
                     student_id: studentId,
@@ -390,20 +336,15 @@ export default function CoursePlanner() {
             }
             
             setShowPrereqModal(false);
-            setHasCompletedCourses(true);
-            // Mark prerequisite modal as completed for this student
             localStorage.setItem(`prereq_modal_completed_${studentId}`, 'true');
             alert('Prerequisites marked as completed!');
         } catch (err) {
             console.error('Failed to mark prerequisites as completed', err);
-            console.error('Error response:', err.response?.data);
-            console.error('Error status:', err.response?.status);
             alert('Failed to save prerequisites. Please try again.');
         }
     }
 
     function handleClosePrereqModal() {
-        // Mark prerequisite modal as completed for this student even if skipped
         localStorage.setItem(`prereq_modal_completed_${studentId}`, 'true');
         setShowPrereqModal(false);
     }
