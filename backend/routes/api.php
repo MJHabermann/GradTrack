@@ -44,12 +44,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/users/{id}', [UserController::class, 'update']);
 });
 
-// Student management routes
-Route::apiResource('students', StudentController::class);
+// Student management routes - specific routes MUST come before apiResource
 Route::get('/students/program/{programType}', [StudentController::class, 'getByProgramType']);
 Route::get('/students/professor/{professorId}', [StudentController::class, 'getByMajorProfessor']);
 Route::get('/students/{id}/documents', [StudentController::class, 'getDocuments']);
 Route::get('/students/{studentId}/documents/{documentId}/download', [StudentController::class, 'downloadDocument']);
+// Explicitly define the show route to prevent auto model binding
+Route::get('/students/{id}', [StudentController::class, 'show']);
+// Other CRUD operations
+Route::post('/students', [StudentController::class, 'store']);
+Route::put('/students/{id}', [StudentController::class, 'update']);
+Route::patch('/students/{id}', [StudentController::class, 'update']);
+Route::delete('/students/{id}', [StudentController::class, 'destroy']);
 
 // Admin-only routes for managing student advisors
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {

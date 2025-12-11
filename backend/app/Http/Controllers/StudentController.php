@@ -98,7 +98,16 @@ class StudentController extends Controller
      */
     public function show(string $id)
     {
-        $student = Student::with(['user', 'majorProfessor'])->findOrFail($id);
+        // The $id parameter is the user_id, and student_id equals user_id
+        // Try to find by student_id first (which is the primary key)
+        $student = Student::with(['user', 'majorProfessor'])->where('student_id', $id)->first();
+        
+        if (!$student) {
+            // Log debug info
+            \Log::warning('Student not found with student_id: ' . $id);
+            \Log::warning('Available students: ' . Student::pluck('student_id')->implode(', '));
+            abort(404, 'Student not found');
+        }
 
         return response()->json([
             'student' => [
@@ -121,7 +130,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::where('student_id', $id)->firstOrFail();
 
         $request->validate([
             'program_type' => 'sometimes|required|in:Masters,PhD',
@@ -156,7 +165,7 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::where('student_id', $id)->firstOrFail();
         $student->delete();
 
         return response()->json([
@@ -225,7 +234,7 @@ class StudentController extends Controller
      */
     public function updateAdvisor(Request $request, string $id)
     {
-        $student = Student::with(['user', 'majorProfessor'])->findOrFail($id);
+        $student = Student::with(['user', 'majorProfessor'])->where('student_id', $id)->firstOrFail();
 
         $request->validate([
             'major_professor_id' => 'nullable|exists:users,id',
@@ -273,7 +282,7 @@ class StudentController extends Controller
      */
     public function getDocuments(string $id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::where('student_id', $id)->firstOrFail();
         
         $documents = Document::where('user_id', $student->student_id)
             ->orderBy('created_at', 'desc')
@@ -290,7 +299,7 @@ class StudentController extends Controller
      */
     public function downloadDocument(string $studentId, string $documentId)
     {
-        $student = Student::findOrFail($studentId);
+        $student = Student::where('student_id', $studentId)->firstOrFail();
         $document = Document::findOrFail($documentId);
 
         // Verify the document belongs to this student

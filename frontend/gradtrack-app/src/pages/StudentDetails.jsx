@@ -92,14 +92,42 @@ const StudentDetail = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await API_CONFIG.request(`/api/students/${studentId}`, {
+        // First, ensure we have a valid student ID
+        let validStudentId = studentId;
+        
+        // If no studentId from URL, try to get it from the authenticated user
+        if (!validStudentId) {
+          try {
+            const meResponse = await API_CONFIG.request('/api/me', {
+              method: 'GET',
+            });
+            const meData = await meResponse.json();
+            const userStudentId = meData.user?.student?.student_id;
+            if (userStudentId) {
+              validStudentId = userStudentId;
+            } else {
+              throw new Error('No student record found for authenticated user');
+            }
+          } catch (err) {
+            console.error('Error fetching user info:', err);
+            throw new Error('Could not determine student ID');
+          }
+        }
+        
+        // Now fetch the student details using the valid student ID
+        const response = await API_CONFIG.request(`/api/students/${validStudentId}`, {
           method: 'GET',
         });
         const data = await response.json();
+        console.log('Student API Response:', data);
+        console.log('Student data:', data.student);
+        if (!data.student) {
+          throw new Error('No student data in response');
+        }
         setStudent(data.student);
       } catch (error) {
         console.error('Error fetching student data:', error);
-        setError('Failed to load student information');
+        setError(error.message || 'Failed to load student information');
       } finally {
         setLoading(false);
       }

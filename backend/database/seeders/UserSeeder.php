@@ -155,6 +155,15 @@ class UserSeeder extends Seeder
                 'role' => 'student',
                 'department' => 'Physics',
             ],
+            [
+                'first_name' => 'Michael',
+                'last_name' => 'Habermann',
+                'email' => 'mbhabes11@gmail.com',
+                'password' => Hash::make('password'),
+                'role' => 'student',
+                'department' => 'Engineering',
+            ],
+
         ];
 
         foreach ($studentUsers as $student) {

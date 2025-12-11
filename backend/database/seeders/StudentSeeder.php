@@ -88,6 +88,15 @@ class StudentSeeder extends Seeder
                 'deficiency_cleared' => false,
                 'graduation_term' => 'Spring 2026',
             ],
+            [
+                'student_id' => $studentUsers->where('email', 'mbhabes11@gmail.com')->first()->id,
+                'program_type' => 'Masters',
+                'major_professor_id' => $facultyUsers->where('email', 'sarah.johnson@gradtrack.com')->first()->id,
+                'start_term' => 'Fall 2024',
+                'i9_status' => 'Completed',
+                'deficiency_cleared' => false,
+                'graduation_term' => 'Spring 2026',
+            ],
         ];
 
         foreach ($studentData as $student) {
