@@ -101,6 +101,11 @@ const loadDocuments = async () => {
       requiredDocumentType: document.required_document_type,
       status: document.status || 'Pending Review',
       reviewComment: document.review_comment || null,
+      dueDate:
+      document.due_date ||
+      requiredDocuments.find(rd => rd.name === document.required_document_type)?.dueDate ||
+      null
+
     })));
     setFiles(mappedFiles);
     updateRequiredDocuments(mappedFiles);
@@ -246,6 +251,10 @@ const updateRequiredDocuments = (uploadedFiles) => {
         tag: response.document.tag,
         isRequired: response.document.is_required,
         requiredDocumentType: response.document.required_document_type,
+        dueDate:
+        requiredDocuments.find(rd => rd.name === response.document.required_document_type)?.dueDate
+        || response.document.due_date
+        || null,
       }
       const updatedFiles = [...files, newDocument];
       setFiles(updatedFiles);
@@ -313,7 +322,7 @@ const updateRequiredDocuments = (uploadedFiles) => {
                     </div>
                   </div>
                   <div className="doc-details">
-                    <span className="due-date">Due: {doc.dueDate}</span>
+                    <span className="due-date-badge">Due: {doc.dueDate}</span>
                     <span className="doc-description">{doc.description}</span>
                     
                     {doc.reviewComment && doc.reviewStatus === 'Declined' && (
@@ -383,6 +392,11 @@ const updateRequiredDocuments = (uploadedFiles) => {
                   <div className="file-info">
                     <div className="file-name">{file.name}</div>
                     <div className="file-meta">{file.size} • {file.date}</div>
+                    {file.dueDate && (
+                    <div className="file-due-date-badge">
+                    Due: {file.dueDate}
+                  </div>
+                  )}
                     <div className="file-tags">
                       <span className="file-tag">{file.tag}</span>
                       {file.status && (

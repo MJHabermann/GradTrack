@@ -520,3 +520,31 @@
   color: #1976d2;
   font-weight: 500;
 }
+
+/* === Soft Academic Due Date Styling === */
+
+.due-date-badge,
+.file-due-date-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  background: #e3f2fd;    /* soft parchment tone */
+  color: #5a4d3c;          /* warm academic brown */
+  border: 1px solid #e2dccd; /* subtle vintage border */
+
+  opacity: 0.9;
+}
+
+.required-doc-item .due-date-badge {
+  margin-bottom: 6px;
+}
+
+.file-card .file-due-date-badge {
+  margin-bottom: 8px;
+}
+
