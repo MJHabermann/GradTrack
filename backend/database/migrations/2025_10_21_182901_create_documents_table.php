@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('tag')->default('Untagged');
             $table->boolean('is_required')->default(false);
             $table->string('required_document_type')->nullable(); // 'Application Form', 'Transcripts', etc.
+            $table->datetime('deadline')->nullable(); // 'Pending', 'Approved', 'Rejected'
             $table->timestamps();
         });
     }

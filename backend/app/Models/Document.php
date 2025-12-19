@@ -20,6 +20,7 @@ class Document extends Model
         'required_document_type',
         'status',
         'review_comment',
+        'deadline',
     ];
 
     // Relationship to User

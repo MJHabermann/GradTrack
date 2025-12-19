@@ -33,6 +33,7 @@ class DocumentController extends Controller
             'tag' => 'nullable|string',
             'is_required' => 'nullable|boolean',
             'required_document_type' => 'nullable|string',
+            'deadline' => 'nullable|date',
         ]);
 
         $file = $request->file('file');
@@ -54,6 +55,7 @@ class DocumentController extends Controller
             'tag' => $request->input('tag', 'Untagged'),
             'is_required' => $request->input('is_required', false),
             'required_document_type' => $request->input('required_document_type'),
+            'deadline' => $request->input('deadline'),
             'status' => 'Pending Review', // Set status to Pending Review when uploaded
         ]);
 

@@ -22,17 +22,17 @@ const Documents = () => {
       id: 1,
       name: 'Application Form',
       required: true,
-      dueDate: '2025-10-20',
+      deadline: '2025-12-31',
       fileTypes: ['pdf'],
       description: 'Completed graduate application form submitted through the online portal',
       status: 'pending',
-      uploaded: false
+      uploaded: false,
     },
     {
       id: 2,
       name: 'Transcripts',
       required: true,
-      dueDate: '2025-10-25',
+      deadline: '2026-01-15',
       fileTypes: ['pdf'],
       description: 'Transcripts from all previously attended institutions',
       status: 'pending',
@@ -42,7 +42,7 @@ const Documents = () => {
       id: 3,
       name: 'Letters of Recommendation',
       required: true,
-      dueDate: '2025-10-30',
+      deadline: '2026-01-20',
       fileTypes: ['pdf'],
       description: 'Two or three signed recommendation letters from academic or professional references',
       status: 'pending',
@@ -52,7 +52,7 @@ const Documents = () => {
       id: 4,
       name: 'Statement of Purpose',
       required: true,
-      dueDate: '2025-11-05',
+      deadline: '2026-01-25',
       fileTypes: ['pdf', 'docx'],
       description: 'Personal statement outlining academic goals and reasons for pursuing graduate study',
       status: 'pending',
@@ -62,7 +62,7 @@ const Documents = () => {
       id: 5,
       name: 'Resume or CV',
       required: true,
-      dueDate: '2025-11-10',
+      deadline: '2026-01-30',
       fileTypes: ['pdf', 'docx'],
       description: 'Detailed record of academic background, research, and work experience',
       status: 'pending',
@@ -72,7 +72,7 @@ const Documents = () => {
       id: 6,
       name: 'I-9 Employment Eligibility Verification',
       required: true,
-      dueDate: '2025-08-15',
+      deadline: '2026-02-05',
       fileTypes: ['pdf'],
       description: 'Employment eligibility verification (International students)',
       status: 'pending',
@@ -102,8 +102,8 @@ const loadDocuments = async () => {
       status: document.status || 'Pending Review',
       reviewComment: document.review_comment || null,
       dueDate:
-      document.due_date ||
-      requiredDocuments.find(rd => rd.name === document.required_document_type)?.dueDate ||
+      document.deadline ||
+      requiredDocuments.find(rd => rd.name === document.required_document_type)?.deadline ||
       null
 
     })));
@@ -322,7 +322,7 @@ const updateRequiredDocuments = (uploadedFiles) => {
                     </div>
                   </div>
                   <div className="doc-details">
-                    <span className="due-date-badge">Due: {doc.dueDate}</span>
+                    <span className="due-date-badge">Due: {new Date(doc.deadline).toLocaleDateString()}</span>
                     <span className="doc-description">{doc.description}</span>
                     
                     {doc.reviewComment && doc.reviewStatus === 'Declined' && (

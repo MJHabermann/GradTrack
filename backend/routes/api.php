@@ -33,10 +33,12 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-// User management routes
-// Exclude update from apiResource so we can add authentication middleware
-Route::apiResource('users', UserController::class)->except(['update']);
+// User management routes - explicit definitions to prevent implicit model binding
+Route::get('/users', [UserController::class, 'index']);
+Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/role/{role}', [UserController::class, 'getByRole']);
+Route::get('/users/{id}', [UserController::class, 'show']);
+Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
 // Protected user update route - requires authentication
 Route::middleware('auth:sanctum')->group(function () {
@@ -44,7 +46,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/users/{id}', [UserController::class, 'update']);
 });
 
-// Student management routes - specific routes MUST come before apiResource
+// Student management routes - specific routes MUST come before generic {id} route
+Route::get('/students', [StudentController::class, 'index']);
 Route::get('/students/program/{programType}', [StudentController::class, 'getByProgramType']);
 Route::get('/students/professor/{professorId}', [StudentController::class, 'getByMajorProfessor']);
 Route::get('/students/{id}/documents', [StudentController::class, 'getDocuments']);
@@ -63,11 +66,16 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::patch('/students/{id}/advisor', [StudentController::class, 'updateAdvisor']);
 });
 
-// Faculty management routes
-Route::apiResource('faculty', FacultyController::class);
+// Faculty management routes - explicit definitions to prevent implicit model binding
+Route::get('/faculty', [FacultyController::class, 'index']);
+Route::post('/faculty', [FacultyController::class, 'store']);
 Route::get('/faculty/title/{title}', [FacultyController::class, 'getByTitle']);
 Route::get('/faculty/office/{office}', [FacultyController::class, 'getByOffice']);
+Route::get('/faculty/{id}', [FacultyController::class, 'show']);
 Route::get('/faculty/{id}/students', [FacultyController::class, 'getWithStudents']);
+Route::put('/faculty/{id}', [FacultyController::class, 'update']);
+Route::patch('/faculty/{id}', [FacultyController::class, 'update']);
+Route::delete('/faculty/{id}', [FacultyController::class, 'destroy']);
 
 // Existing routes
 Route::get('/major-completion/{studentId}', [RegistrarController::class, 'getCompletion']);
@@ -79,16 +87,25 @@ Route::get('/courses', [CourseController::class, 'index']);
 // Route::get('/evaluations', [EvaluationController::class, 'index']);
 // Route::get('/notifications', [NotificationController::class, 'index']);
 Route::post('/advisor/message', [AdvisorController::class, 'sendMessage']);
+
+// Course management routes - explicit definitions to prevent implicit model binding
+Route::get('/courses', [CourseController::class, 'index']);
 Route::post('/courses', [CourseController::class, 'store']);
+Route::get('/courses/{id}', [CourseController::class, 'show']);
+Route::put('/courses/{id}', [CourseController::class, 'update']);
+Route::patch('/courses/{id}', [CourseController::class, 'update']);
+Route::delete('/courses/{id}', [CourseController::class, 'destroy']);
 Route::post('/courses/{course}/prerequisites', [CourseController::class, 'addPrerequisite']);
 Route::post('/courses/{course}/prerequisite-groups', [CourseController::class, 'addPrerequisiteGroup']);
-
-Route::put('/courses/{course}', [CourseController::class, 'update']);
-Route::delete('/courses/{course}', [CourseController::class, 'destroy']);
 Route::delete('/courses/{course}/prerequisite-groups/{group_id}', [CourseController::class, 'removePrerequisiteGroup']);
 
-Route::apiResource('/courses', CourseController::class);
-Route::apiResource('/enrollments', EnrollmentController::class);
+// Enrollment management routes - explicit definitions to prevent implicit model binding
+Route::get('/enrollments', [EnrollmentController::class, 'index']);
+Route::post('/enrollments', [EnrollmentController::class, 'store']);
+Route::get('/enrollments/{id}', [EnrollmentController::class, 'show']);
+Route::put('/enrollments/{id}', [EnrollmentController::class, 'update']);
+Route::patch('/enrollments/{id}', [EnrollmentController::class, 'update']);
+Route::delete('/enrollments/{id}', [EnrollmentController::class, 'destroy']);
 
 // Student enrollments and terms routes
 Route::get('/students/{student}/enrollments', [StudentController::class, 'getEnrollments']);
